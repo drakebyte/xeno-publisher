@@ -1,0 +1,2 @@
+<?php
+//	specialized query functions
