@@ -8,8 +8,7 @@ $confgroup = array (
 			'password' => '',
 			'host' => 'localhost',
 			'port' => '',
-			// 'driver' => 'mysql',
-			'prefix' => 'xp_',
+			'prefix' => '',
 			'dev' => true,
 		),
 );
