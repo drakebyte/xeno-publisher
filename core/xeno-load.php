@@ -19,6 +19,7 @@ include_once (XENO_ROOT . '/core/common.php');
 define('VERSION', '1.0');	//	The current system version.
 $config = array_key_exists($_SERVER['SERVER_NAME'],$confgroup) ? $confgroup[$_SERVER['SERVER_NAME']] : $confgroup['default'];	//	get the config
 define('XENO_STATUS', $config['dev']);	// Status of the project
+define('XENO_TABLE_PREFIX', $config['prefix']);	// Status of the project
 $GLOBALS['settings'] = xeno_settings_get();	//	load the settings table
 
 /**

@@ -9,7 +9,7 @@ $confgroup = array (
 			'host' => 'localhost',
 			'port' => '',
 			// 'driver' => 'mysql',
-			// 'prefix' => '',
+			'prefix' => 'xp_',
 			'dev' => true,
 		),
 );
