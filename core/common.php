@@ -27,13 +27,3 @@ function debug( $data, $label = NULL, $print_r = FALSE ) {
 function check_plain( $text ) {
 	return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
 }
-
-/**
- * Validates the secret parameter from an URL against the one set in the database.
- */
-function validate_secret() {
-	if (!empty($_GET['secret']) && $_GET['secret'] == DB::queryOneField('value', "SELECT * FROM settings WHERE name=%s", 'secret')) {
-		return true;
-	}
-	return false;
-}

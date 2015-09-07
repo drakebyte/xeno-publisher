@@ -8,26 +8,33 @@
  * include core libraries.
  */
 include_once (XENO_ROOT . '/config/settings.php');
-include_once (XENO_ROOT . '/core/database.php');
+include_once (XENO_ROOT . '/core/db.php');
 include_once (XENO_ROOT . '/core/query.php');
 include_once (XENO_ROOT . '/core/common.php');
+include_once (XENO_ROOT . '/core/tpl.php');
 
  
 /**
  * Define statics and globals
  */
-define('VERSION', '1.0');	//	The current system version.
 $config = array_key_exists($_SERVER['SERVER_NAME'],$confgroup) ? $confgroup[$_SERVER['SERVER_NAME']] : $confgroup['default'];	//	get the config
-define('XENO_STATUS', $config['dev']);	// Status of the project
-define('XENO_TABLE_PREFIX', $config['prefix']);	// Status of the project
-$GLOBALS['settings'] = xeno_settings_get();	//	load the settings table
+
+define('VERSION',			'1.0');
+define('DB_USER',			$config['username']);
+define('DB_PASS',			$config['password']);
+define('DB_NAME',			$config['database']);
+define('DB_HOST',			$config['host']);
+define('DB_PORT',			$config['port']);
+define('DB_ENCODING',		'utf8');
+define('DB_TABLE_PREFIX',	$config['prefix']);
+define('XENO_STATUS',		$config['dev']);
 
 /**
  * prepare database.
  */
-DB::$user = $config['username'];
-DB::$password = $config['password'];
-DB::$dbName = $config['database'];
-DB::$host = $config['host'];
-DB::$port = $config['port'];
-DB::$encoding = 'utf8';
+DB::$user		=	DB_USER;
+DB::$password	=	DB_PASS;
+DB::$dbName		=	DB_NAME;
+DB::$host		=	DB_HOST;
+DB::$port		=	DB_PORT;
+DB::$encoding	=	DB_ENCODING;
