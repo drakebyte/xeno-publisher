@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Provides basic database functions
+ */
 class DB {
 	//	initial connection
 	public static $dbName = '';
