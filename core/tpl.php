@@ -26,6 +26,6 @@ function tpl_get_css() {
 	return;
 }
 
-function tpl_get_js($location) {
+function tpl_get_js( $location ) {
 	return;
 }
