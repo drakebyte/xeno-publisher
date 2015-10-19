@@ -1,86 +1,117 @@
--- phpMyAdmin SQL Dump
--- version 4.4.14
--- http://www.phpmyadmin.net
---
--- Host: 127.0.0.1
--- Generation Time: Sep 07, 2015 at 02:53 AM
--- Server version: 5.6.26
--- PHP Version: 5.6.12
+-- Adminer 4.2.2 MySQL dump
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
+SET NAMES utf8;
+SET time_zone = '+00:00';
+SET foreign_key_checks = 0;
+SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `xeno`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `eventlog`
---
+DROP DATABASE IF EXISTS `xeno`;
+CREATE DATABASE `xeno` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */;
+USE `xeno`;
 
 DROP TABLE IF EXISTS `eventlog`;
-CREATE TABLE IF NOT EXISTS `eventlog` (
-  `lid` int(11) NOT NULL COMMENT 'Primary Key: Unique event log ID.',
-  `uid` int(11) NOT NULL DEFAULT '0' COMMENT 'The users.uid of the user who triggered the event.',
-  `type` varchar(64) COLLATE utf8_bin NOT NULL COMMENT 'Type of log message, for example "user" or "page not found."',
-  `severity` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'The severity level of the event; ranges from 0 (Emergency) to 7 (Debug)',
-  `referer` text COLLATE utf8_bin COMMENT 'URL of referring page.',
-  `message` longtext COLLATE utf8_bin NOT NULL COMMENT 'Text of log message to be passed into the t() function.'
+CREATE TABLE `eventlog` (
+  `log_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key: Unique event log ID.',
+  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT 'The users.uid of the user who triggered the event.',
+  `log_type` varchar(64) COLLATE utf8_bin NOT NULL COMMENT 'Type of log message, for example "user" or "page not found."',
+  `log_severity` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'The severity level of the event; ranges from 0 (Emergency) to 7 (Debug)',
+  `log_referer` text COLLATE utf8_bin COMMENT 'URL of referring page.',
+  `log_message` longtext COLLATE utf8_bin NOT NULL COMMENT 'Text of log message to be passed into the t() function.',
+  PRIMARY KEY (`log_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `eventlog_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- --------------------------------------------------------
+TRUNCATE `eventlog`;
 
---
--- Table structure for table `settings`
---
+DROP TABLE IF EXISTS `files`;
+CREATE TABLE `files` (
+  `file_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'File ID.',
+  `user_id` int(11) NOT NULL COMMENT 'The id of the user who is associated with the file.',
+  `file_name` varchar(255) COLLATE utf8_bin NOT NULL COMMENT 'Name of the file with no path components. This may differ from the basename of the URI if the file is renamed to avoid overwriting an existing file.',
+  `file_uri` varchar(255) COLLATE utf8_bin NOT NULL COMMENT 'The URI to access the file (either local or remote).',
+  `file_mime` varchar(255) COLLATE utf8_bin NOT NULL COMMENT 'The file’s MIME type.',
+  `file_size` int(11) NOT NULL COMMENT 'The size of the file in bytes.',
+  `file_status` tinyint(4) NOT NULL COMMENT 'A field indicating the status of the file. Two status are defined in core: temporary (0) and permanent (1). Temporary files older than DRUPAL_MAXIMUM_TEMP_FILE_AGE will be removed during a cron run.',
+  `file_created` int(11) NOT NULL COMMENT 'UNIX timestamp for when the file was added.',
+  `file_type` varchar(11) COLLATE utf8_bin NOT NULL COMMENT 'The type of this file.',
+  PRIMARY KEY (`file_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `files_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+TRUNCATE `files`;
+
+DROP TABLE IF EXISTS `languages`;
+CREATE TABLE `languages` (
+  `lang_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Language ID.',
+  `lang_code` varchar(32) COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT 'Machine readable language code.',
+  `lang_name` varchar(32) COLLATE utf8_bin NOT NULL COMMENT 'Human readable language name.',
+  PRIMARY KEY (`lang_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+TRUNCATE `languages`;
+
+DROP TABLE IF EXISTS `pod`;
+CREATE TABLE `pod` (
+  `pod_id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'The primary identifier for a pod.',
+  `pod_type` varchar(32) COLLATE utf8_bin NOT NULL COMMENT 'The machine-readable name of the pod type.',
+  `user_id` int(11) NOT NULL COMMENT 'The author''s user id.',
+  `pod_status` int(11) NOT NULL COMMENT 'Boolean indicating whether the node is published (visible to non-administrators).',
+  `pod_created` int(11) NOT NULL COMMENT 'The Unix timestamp when the pod was created.',
+  `pod_modified` int(11) NOT NULL COMMENT 'The Unix timestamp when the pod was most recently saved.',
+  PRIMARY KEY (`pod_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `pod_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+TRUNCATE `pod`;
+
+DROP TABLE IF EXISTS `podfields`;
+CREATE TABLE `podfields` (
+  `field_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Field data id.',
+  `pod_id` int(10) NOT NULL COMMENT 'Parent Pod id.',
+  `field_name` varchar(32) COLLATE utf8_bin NOT NULL COMMENT 'Field name.',
+  `lang_name` int(11) NOT NULL COMMENT 'Pod content language.',
+  `field_content` longtext COLLATE utf8_bin NOT NULL COMMENT 'The field data to be displayed in the front end.',
+  PRIMARY KEY (`field_id`),
+  KEY `pod_id` (`pod_id`),
+  KEY `lang_name` (`lang_name`),
+  CONSTRAINT `podfields_ibfk_1` FOREIGN KEY (`pod_id`) REFERENCES `pod` (`pod_id`),
+  CONSTRAINT `podfields_ibfk_2` FOREIGN KEY (`lang_name`) REFERENCES `languages` (`lang_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+TRUNCATE `podfields`;
 
 DROP TABLE IF EXISTS `settings`;
-CREATE TABLE IF NOT EXISTS `settings` (
-  `name` varchar(128) COLLATE utf8_bin NOT NULL,
-  `value` varchar(256) COLLATE utf8_bin NOT NULL
+CREATE TABLE `settings` (
+  `setting_name` varchar(128) COLLATE utf8_bin NOT NULL COMMENT 'The name of the setting.',
+  `setting_value` varchar(256) COLLATE utf8_bin NOT NULL COMMENT 'The value of the setting.',
+  PRIMARY KEY (`setting_name`),
+  UNIQUE KEY `unique` (`setting_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
---
--- Dumping data for table `settings`
---
+TRUNCATE `settings`;
+INSERT INTO `settings` (`setting_name`, `setting_value`) VALUES
+('current_theme',	'leonidas'),
+('language',	'en'),
+('secret',	'coelacantsaretastyfishies');
 
-INSERT INTO `settings` (`name`, `value`) VALUES
-('secret', 'coelacantsaretastyfishies');
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key: Unique user ID.',
+  `user_name` varchar(32) COLLATE utf8_bin NOT NULL COMMENT 'Unique user name.',
+  `user_password` varchar(32) COLLATE utf8_bin NOT NULL COMMENT 'User’s password (hashed).',
+  `user_email` varchar(32) COLLATE utf8_bin NOT NULL COMMENT 'User’s e-mail address.',
+  `user_created` int(11) NOT NULL COMMENT 'Timestamp for when user was created.',
+  `user_login` int(11) NOT NULL COMMENT 'Timestamp for user’s last login.',
+  `user_status` int(11) NOT NULL COMMENT 'Whether the user is active(1) or blocked(0).',
+  `lang_name` int(11) NOT NULL COMMENT 'User’s default language.',
+  PRIMARY KEY (`user_id`),
+  KEY `lang_name` (`lang_name`),
+  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`lang_name`) REFERENCES `languages` (`lang_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
---
--- Indexes for dumped tables
---
+TRUNCATE `users`;
 
---
--- Indexes for table `eventlog`
---
-ALTER TABLE `eventlog`
-  ADD PRIMARY KEY (`lid`);
-
---
--- Indexes for table `settings`
---
-ALTER TABLE `settings`
-  ADD PRIMARY KEY (`name`),
-  ADD UNIQUE KEY `unique` (`name`) USING BTREE;
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `eventlog`
---
-ALTER TABLE `eventlog`
-  MODIFY `lid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key: Unique event log ID.';
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+-- 2015-10-19 22:21:16
