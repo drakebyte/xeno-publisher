@@ -1,0 +1,3 @@
+www non www redirect
+seo links redirect
+multisite portability public/SITE, depending on config
