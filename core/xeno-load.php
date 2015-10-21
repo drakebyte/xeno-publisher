@@ -8,7 +8,8 @@
  * include core libraries.
  */
 include_once ( XENO_ROOT . '/config/settings.php' );
-include_once ( XENO_ROOT . '/core/db.php' );
+include_once ( XENO_ROOT . '/core/cls_db.php' );
+include_once ( XENO_ROOT . '/core/cls_user.php' );
 include_once ( XENO_ROOT . '/core/query.php' );
 include_once ( XENO_ROOT . '/core/common.php' );
 include_once ( XENO_ROOT . '/core/tpl.php' );
@@ -38,3 +39,7 @@ DB::$dbName		=	DB_NAME;
 DB::$host		=	DB_HOST;
 DB::$port		=	DB_PORT;
 DB::$encoding	=	DB_ENCODING;
+
+sec_session_start();
+$user = new User;
+debug( $user, null,true );

@@ -16,7 +16,7 @@ function query_get_setting( $name = false ) {
 	if ( !$name ) {
 		return false;
 	}
-	$setting = DB::queryFirstField( query_prefix_table( "SELECT value FROM {settings} WHERE name=%s" ), $name );
+	$setting = DB::queryFirstField( query_prefix_table( "SELECT setting_value FROM {settings} WHERE setting_name=%s" ), $name );
 	return $setting;
 }
 
@@ -24,7 +24,7 @@ function query_get_setting( $name = false ) {
  * Validates the secret parameter from an URL against the one set in the database.
  */
 function query_validate_secret() {
-	if ( !empty( $_GET['secret'] ) && $_GET['secret'] == DB::queryOneField( 'value', query_prefix_table("SELECT * FROM {settings} WHERE name=%s"), 'secret' ) ) {
+	if ( !empty( $_GET['secret'] ) && $_GET['secret'] == DB::queryOneField( 'setting_value', query_prefix_table("SELECT * FROM {settings} WHERE setting_name=%s"), 'secret' ) ) {
 		return true;
 	}
 	return false;

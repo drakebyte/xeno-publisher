@@ -28,7 +28,7 @@ class DB {
 	//	internal
 	protected static $xdb = null;
 	
-	public static function getMDB() {
+	public static function getXenoDB() {
 		$xdb = DB::$xdb;
 		
 		if ( $xdb === null ) {
@@ -50,45 +50,45 @@ class DB {
 	}
 	
 	//	yes, this is ugly. __callStatic() only works in 5.3+
-	public static function get() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'get' ), $args ); }
-	public static function disconnect() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'disconnect' ), $args ); }
-	public static function query() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'query' ), $args ); }
-	public static function queryFirstRow() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'queryFirstRow' ), $args ); }
-	public static function queryOneRow() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'queryOneRow' ), $args ); }
-	public static function queryAllLists() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'queryAllLists' ), $args ); }
-	public static function queryFullColumns() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'queryFullColumns' ), $args ); }
-	public static function queryFirstList() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'queryFirstList' ), $args ); }
-	public static function queryOneList() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'queryOneList' ), $args ); }
-	public static function queryFirstColumn() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'queryFirstColumn' ), $args ); }
-	public static function queryOneColumn() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'queryOneColumn' ), $args ); }
-	public static function queryFirstField() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'queryFirstField' ), $args ); }
-	public static function queryOneField() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'queryOneField' ), $args ); }
-	public static function queryRaw() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'queryRaw' ), $args ); }
-	public static function queryRawUnbuf() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'queryRawUnbuf' ), $args ); }
+	public static function get() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'get' ), $args ); }
+	public static function disconnect() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'disconnect' ), $args ); }
+	public static function query() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'query' ), $args ); }
+	public static function queryFirstRow() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'queryFirstRow' ), $args ); }
+	public static function queryOneRow() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'queryOneRow' ), $args ); }
+	public static function queryAllLists() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'queryAllLists' ), $args ); }
+	public static function queryFullColumns() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'queryFullColumns' ), $args ); }
+	public static function queryFirstList() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'queryFirstList' ), $args ); }
+	public static function queryOneList() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'queryOneList' ), $args ); }
+	public static function queryFirstColumn() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'queryFirstColumn' ), $args ); }
+	public static function queryOneColumn() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'queryOneColumn' ), $args ); }
+	public static function queryFirstField() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'queryFirstField' ), $args ); }
+	public static function queryOneField() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'queryOneField' ), $args ); }
+	public static function queryRaw() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'queryRaw' ), $args ); }
+	public static function queryRawUnbuf() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'queryRawUnbuf' ), $args ); }
 	
-	public static function insert() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'insert' ), $args ); }
-	public static function insertIgnore() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'insertIgnore' ), $args ); }
-	public static function insertUpdate() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'insertUpdate' ), $args ); }
-	public static function replace() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'replace' ), $args ); }
-	public static function update() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'update' ), $args ); }
-	public static function delete() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'delete' ), $args ); }
+	public static function insert() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'insert' ), $args ); }
+	public static function insertIgnore() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'insertIgnore' ), $args ); }
+	public static function insertUpdate() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'insertUpdate' ), $args ); }
+	public static function replace() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'replace' ), $args ); }
+	public static function update() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'update' ), $args ); }
+	public static function delete() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'delete' ), $args ); }
 	
-	public static function insertId() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'insertId' ), $args ); }
-	public static function count() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'count' ), $args ); }
-	public static function affectedRows() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'affectedRows' ), $args ); }
+	public static function insertId() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'insertId' ), $args ); }
+	public static function count() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'count' ), $args ); }
+	public static function affectedRows() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'affectedRows' ), $args ); }
 	
-	public static function useDB() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'useDB' ), $args ); }
-	public static function startTransaction() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'startTransaction' ), $args ); }
-	public static function commit() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'commit' ), $args ); }
-	public static function rollback() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'rollback' ), $args ); }
-	public static function tableList() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'tableList' ), $args ); }
-	public static function columnList() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'columnList' ), $args ); }
+	public static function useDB() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'useDB' ), $args ); }
+	public static function startTransaction() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'startTransaction' ), $args ); }
+	public static function commit() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'commit' ), $args ); }
+	public static function rollback() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'rollback' ), $args ); }
+	public static function tableList() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'tableList' ), $args ); }
+	public static function columnList() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'columnList' ), $args ); }
 	
-	public static function sqlEval() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'sqlEval' ), $args ); }
-	public static function nonSQLError() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'nonSQLError' ), $args ); }
+	public static function sqlEval() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'sqlEval' ), $args ); }
+	public static function nonSQLError() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'nonSQLError' ), $args ); }
 	
-	public static function serverVersion() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'serverVersion' ), $args ); }
-	public static function transactionDepth() { $args = func_get_args(); return call_user_func_array( array( DB::getMDB(), 'transactionDepth' ), $args ); }
+	public static function serverVersion() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'serverVersion' ), $args ); }
+	public static function transactionDepth() { $args = func_get_args(); return call_user_func_array( array( DB::getXenoDB(), 'transactionDepth' ), $args ); }
 	
 	
 	public static function debugMode( $handler = true ) { 
