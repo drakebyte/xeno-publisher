@@ -5,9 +5,9 @@ function tpl_render_page() {
 	$themename = tpl_get_theme_folder();
 	$themepage = tpl_get_page();
 	$extension = '.tpl.php';
-	include_once( '/public/' . $themename . '/gui/header' . $extension );
-	include_once( '/public/' . $themename . '/gui/' . $themepage . $extension );
-	include_once( '/public/' . $themename . '/gui/footer' . $extension );
+	include_once( '/public/' . $themename . '/front/header' . $extension );
+	include_once( '/public/' . $themename . '/front/' . $themepage . $extension );
+	include_once( '/public/' . $themename . '/front/footer' . $extension );
 }
 
 function tpl_get_page() {

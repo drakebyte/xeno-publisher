@@ -10,9 +10,14 @@
 include_once ( XENO_ROOT . '/config/settings.php' );
 include_once ( XENO_ROOT . '/core/cls_db.php' );
 include_once ( XENO_ROOT . '/core/cls_user.php' );
-include_once ( XENO_ROOT . '/core/query.php' );
-include_once ( XENO_ROOT . '/core/common.php' );
-include_once ( XENO_ROOT . '/core/tpl.php' );
+include_once ( XENO_ROOT . '/core/cls_validate.php' );
+include_once ( XENO_ROOT . '/core/cls_streamfile.php' );
+include_once ( XENO_ROOT . '/core/cls_hook.php' );
+include_once ( XENO_ROOT . '/core/lib_query.php' );
+include_once ( XENO_ROOT . '/core/lib_formatting.php' );
+include_once ( XENO_ROOT . '/core/lib_shortcodes.php' );
+include_once ( XENO_ROOT . '/core/lib_common.php' );
+include_once ( XENO_ROOT . '/core/lib_tpl.php' );
 
  
 /**
@@ -40,6 +45,9 @@ DB::$host		=	DB_HOST;
 DB::$port		=	DB_PORT;
 DB::$encoding	=	DB_ENCODING;
 
+//	start a secure session
 sec_session_start();
+
+//	defining global classes
 $user = new User;
-debug( $user, null,true );
+$hook = new Hooks();

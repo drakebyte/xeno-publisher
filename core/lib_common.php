@@ -25,7 +25,7 @@ function debug( $data, $label = NULL, $print_r = FALSE ) {
  * Internet Explorer 6.
  */
 function check_plain( $text ) {
-	return htmlspecialchars( $text, ENT_QUOTES, 'UTF-8' );
+	return htmlspecialchars( trim( $text ), ENT_QUOTES, 'UTF-8' );
 }
 
 //	start a secure session
