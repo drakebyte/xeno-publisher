@@ -23,7 +23,17 @@ tpl_render_page();
 <hr />
 <?php
 debug( query_get_setting( 'current_theme' ), null,true );
-debug( XENO_URL, null,true );
+
+//	login
+login();
+debug( $_SESSION, null,true );
+// login_check();
 ?>
 HELP:
 <li><a href="documentation/database.html" target="_blank">DATABASE</a></li>
+
+<form action="index.php" method="post">
+	<label for="username">Username</label><input id="username" type="text" value="admin" name="username" />
+	<label for="password">password</label><input id="password" type="text" value="admin" name="password" />
+	<input type="submit" value="submit" name="Log In" />
+</form>
