@@ -1,4 +1,8 @@
 <!-- TEMPLATE ENDED. REDUNDANT PLACEHOLDER BELOW -->
+<link rel="stylesheet" type="text/css" href="ui/css/reset.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="ui/css/fonts.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="ui/css/style.css" media="screen" />
+<body>
 <hr />
 <center>PAGE END</center>
 <hr />
@@ -71,6 +75,9 @@ if ( isset( $_POST['action'] ) ) {
 	if ($_POST['action'] == 'register') {
 		$user->RegisterUser();
 	}
+	if ($_POST['action'] == 'logout') {
+		$user->LogOut();
+	}
 }
 ?>
 HELP:
@@ -87,5 +94,10 @@ HELP:
 	<label for="username">Username</label><input id="username" type="text" value="admin" name="username" />
 	<label for="password">Password</label><input id="password" type="text" value="admin" name="password" />
 	<label for="email">Email</label><input id="email" type="text" value="admin@admin.com" name="email" />
-	<input type="submit" value="Log In" name="submit" />
+	<input type="submit" value="Register" name="submit" />
 </form>
+<form action="index.php" method="post">
+	<input type="hidden" name="action" value="logout" />
+	<input type="submit" value="Log Out" name="submit" />
+</form>
+</body>

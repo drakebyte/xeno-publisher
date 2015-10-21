@@ -45,11 +45,11 @@
  *
  * @package PHP Hooks
  */
-if (!class_exists('Hooks')){
+if (!class_exists('Hook')){
 	/**
 	* Hooks
 	*/
-	class Hooks
+	class Hook
 	{
 		/**
 		 * $filters holds list of hooks

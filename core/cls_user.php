@@ -40,20 +40,20 @@ class User {
 	
 
 	public function LogIn() {
-		
+		global $hook;
 		if (isset($_POST['username'], $_POST['password'])) {			
-			$username = $_POST['username'];
+			$login['username'] = $_POST['username'];
 			$password = $_POST['password']; 	//	our DB object does all the security needed to protect against injections
 		} else {
 			return false;
 		}
 		
-		if (checkbrute($username) == true) {
+		if ($this->CheckBrute($login['username']) == true) {
 			return false;
 		}
 		
 		// Using prepared statements means that SQL injection is not possible.
-		$logged_user = DB::queryFirstRow( query_prefix_table( "SELECT * FROM {users} WHERE user_name=%s AND user_password=%s" ), $username, md5($password) );
+		$logged_user = DB::queryFirstRow( query_prefix_table( "SELECT * FROM {users} WHERE user_name=%s AND user_password=%s" ), $login['username'], md5($password) );
 		
 		if ($logged_user) {
 			// Password is correct!
@@ -63,11 +63,13 @@ class User {
 			$user_id = preg_replace("/[^0-9]+/", "", $logged_user['user_id']);
 			$_SESSION['user_id'] = $user_id;
 			// XSS protection as we might print this value
-			$username = preg_replace("/[^a-zA-Z0-9_\-]+/", 
+			$login['username'] = preg_replace("/[^a-zA-Z0-9_\-]+/", 
 														"", 
-														$username);
-			$_SESSION['username'] = $username;
+														$login['username']);
+			$_SESSION['username'] = $login['username'];
 			$_SESSION['login_string'] = md5($logged_user['user_password'] . $user_browser);
+			
+			$hook->do_action( 'hook_registration_success', $login );
 			debug( "LOGIN: SUCCESS", null,true );
 			return true;
 		} else {
@@ -75,7 +77,7 @@ class User {
 			// We record this attempt in the database
 			$now = time();
 			DB::insert(query_prefix_table('{login_attempts}'), array(
-					  'user_name' => $username,
+					  'user_name' => $login['username'],
 					  'invalid_time' => $now
 					));
 			// No user exists.
@@ -100,22 +102,42 @@ class User {
 		 
 		// Destroy session 
 		session_destroy();
-		header('Location: ../index.php');
+		header('Location: /index.php');
 	}
 	
 	public function RegisterUser() {
+		global $hook;
 		if (isset($_POST['username'], $_POST['email'], $_POST['password'])) {
-
+			
 			$validation_passed = true;
 			$validation_errors = array();
+			$newborn['username'] = $_POST['username'];
+			$newborn['email'] = $_POST['email'];
+			$newborn['password'] = $_POST['password'];
+			
+			//	logged in users cannot create new accounts
+			if ($this->name) {
+				$validation_passed = false;
+				$validation_errors[] = "LOG OUT BEFORE CREATING NEW ACCOUNT";
+			}
+			
 			// Sanitize and validate the data passed in
-			if (!ValidateString::AlphaNumericUnderscore($_POST['username'])) {
+			if (!ValidateString::AlphaNumericUnderscore($newborn['username'])) {
 				$validation_passed = false;
 				$validation_errors[] = "INVALID USERNAME";
 			}
-			if (!ValidateString::Email($_POST['email'])) {
+			if (!ValidateString::Email($newborn['email'])) {
 				$validation_passed = false;
 				$validation_errors[] = "INVALID EMAIL";
+			}
+			//	we don't need duplicates
+			if( DB::queryFirstField( query_prefix_table( "SELECT user_id FROM {users} WHERE user_name=%s" ), $newborn['username'] )) {
+				$validation_passed = false;
+				$validation_errors[] = "USER EXISTS";
+			}
+			if( DB::queryFirstField( query_prefix_table( "SELECT user_id FROM {users} WHERE user_email=%s" ), $newborn['email'] )) {
+				$validation_passed = false;
+				$validation_errors[] = "EMAIL EXISTS";
 			}
 			if(!$validation_passed) {
 				$validation_errors[] = "REGISTER FAILED";
@@ -123,113 +145,35 @@ class User {
 				return false;
 			}
 			
+			// Insert the new user into the database
+			$newborn['encryptedpassword'] = md5($newborn['password']);
+			DB::insert(query_prefix_table('{users}'), array(
+					  'user_name' => $newborn['username'],
+					  'user_password' => $newborn['encryptedpassword'],
+					  'user_email' => $newborn['email'],
+					  'user_created' => time(),
+					  'user_status' => 1,
+					  'lang_name' => 1,
+					));
+			$newborn['user_id'] = DB::insertId();
 			
+			$hook->do_action( 'hook_registration_success', $newborn );
 			
-			
-			
-			
-			
-			
-				debug( "REGISTER: REACHED END", null,true );
-			return false;	//	do nothing more
-			
-			$username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-			$email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-			$email = filter_var($email, FILTER_VALIDATE_EMAIL);
-			if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-				// Not a valid email
-				$error_msg .= '<p class="error">The email address you entered is not valid</p>';
-			}
-
-			$password = filter_input(INPUT_POST, 'p', FILTER_SANITIZE_STRING);
-			if (strlen($password) != 128) {
-				// The hashed pwd should be 128 characters long.
-				// If it's not, something really odd has happened
-				$error_msg .= '<p class="error">Invalid password configuration.</p>';
-			}
-
-			// Username validity and password validity have been checked client side.
-			// This should should be adequate as nobody gains any advantage from
-			// breaking these rules.
-			//
-
-			$prep_stmt = "SELECT id FROM members WHERE email = ? LIMIT 1";
-			$stmt = $mysqli->prepare($prep_stmt);
-
-			// check existing email  
-			if ($stmt) {
-			$stmt->bind_param('s', $email);
-			$stmt->execute();
-			$stmt->store_result();
-
-			if ($stmt->num_rows == 1) {
-				// A user with this email address already exists
-				$error_msg .= '<p class="error">A user with this email address already exists.</p>';
-				$stmt->close();
-			}
-				$stmt->close();
-			} else {
-				$error_msg .= '<p class="error">Database error Line 39</p>';
-				$stmt->close();
-			}
-
-			// check existing username
-			$prep_stmt = "SELECT id FROM members WHERE username = ? LIMIT 1";
-			$stmt = $mysqli->prepare($prep_stmt);
-
-			if ($stmt) {
-				$stmt->bind_param('s', $username);
-				$stmt->execute();
-				$stmt->store_result();
-
-				if ($stmt->num_rows == 1) {
-					// A user with this username already exists
-					$error_msg .= '<p class="error">A user with this username already exists</p>';
-					$stmt->close();
-				}
-				$stmt->close();
-			} else {
-				$error_msg .= '<p class="error">Database error line 55</p>';
-				$stmt->close();
-			}
-
-			// TODO: 
-			// We'll also have to account for the situation where the user doesn't have
-			// rights to do registration, by checking what type of user is attempting to
-			// perform the operation.
-
-			if (empty($error_msg)) {
-				// Create a random salt
-				//$random_salt = hash('sha512', uniqid(openssl_random_pseudo_bytes(16), TRUE)); // Did not work
-				$random_salt = hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), true));
-
-				// Create salted password 
-				$password = hash('sha512', $password . $random_salt);
-
-				// Insert the new user into the database 
-				if ($insert_stmt = $mysqli->prepare("INSERT INTO members (username, email, password, salt) VALUES (?, ?, ?, ?)")) {
-					$insert_stmt->bind_param('ssss', $username, $email, $password, $random_salt);
-					// Execute the prepared query.
-					if (! $insert_stmt->execute()) {
-						header('Location: ../error.php?err=Registration failure: INSERT');
-					}
-				}
-				header('Location: ./register_success.php');
-			}
+			debug( "REGISTER: USER CREATED. You can now login.", null,true );
+			return true;
 		}
 	}
-}
+	
 
-//	http://www.wikihow.com/Create-a-Secure-Login-Script-in-PHP-and-MySQL
-
-function checkbrute($user_name) {
-	$now = time();
-	$valid_attempts_timeframe = $now - (2 * 60 * 60);	// All login attempts are counted from the past 2 hours.
-	DB::query(query_prefix_table( "SELECT user_name FROM {login_attempts} WHERE user_name = %s AND invalid_time > %i" ), $user_name, $valid_attempts_timeframe );
-	$num_invalid_attempts = DB::count();
-	if ($num_invalid_attempts > 5) {
-		return true;
-	} else {
-		return false;
+	public function CheckBrute($user_name) {
+		$now = time();
+		$valid_attempts_timeframe = $now - (2 * 60 * 60);	// All login attempts are counted from the past 2 hours.
+		DB::query(query_prefix_table( "SELECT user_name FROM {login_attempts} WHERE user_name = %s AND invalid_time > %i" ), $user_name, $valid_attempts_timeframe );
+		$num_invalid_attempts = DB::count();
+		if ($num_invalid_attempts > 5) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

@@ -49,5 +49,5 @@ DB::$encoding	=	DB_ENCODING;
 sec_session_start();
 
 //	defining global classes
+$hook = new Hook;
 $user = new User;
-$hook = new Hooks();

@@ -4,8 +4,8 @@
  * Outputs debug information.
  */
 function debug( $data, $label = NULL, $print_r = FALSE ) {
-	static $color;
-	$color = ( $color == 'A3FFA3' ) ? 'A3DAFF' : 'A3FFA3';
+	static $row;
+	$row = ( $row == 'odd' ) ? 'even' : 'odd';
 	$debuginfo = debug_backtrace();
 	$caller = print_r( $debuginfo[0], true );
 	$callerfile = $debuginfo[0]['file'];
@@ -13,7 +13,7 @@ function debug( $data, $label = NULL, $print_r = FALSE ) {
 	$string = check_plain( $print_r ? print_r( $data, TRUE ) : var_export( $data, TRUE ) );
 
 	// Display values with pre-formatting to increase readability.
-	$string = '<pre style="font-size:14px;background:#' . $color . ' !important;padding:10px;color:#000 !important;white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;">Called from: ' . $callerfile . ' Line: ' . $callerline . '<hr />' . $string . '</pre>';
+	$string = '<pre class="debug ' . $row . '">Called from: ' . $callerfile . ' Line: ' . $callerline . '<hr />' . $string . '</pre>';
 
 	print( trim( $label ? "$label: $string" : $string ) );
 }
