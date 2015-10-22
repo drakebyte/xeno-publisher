@@ -63,10 +63,29 @@ echo testing_shortcodes( '<hr />Lorem ipsum dolor sit amet, consectetur adipisci
 //***********	SHORTCODES	***********
 //*************************************
 
+//*************************************
+//***********	CLEAN URL	***********
 
-// Defining another route with regular expression param
+//	every regex url part is a parameter for the function
+Router::route( 'news/(\w+)/(\d+)',
+				array(
+					'access_level' => array( 'view_pods' ),
+					'page_callback' => 'rozsaszin',
+					'type' => 'function',
+				)
+	);
 
-debug( request_path(), null,true );
+Router::execute(request_path());
+
+function rozsaszin($params) {
+	debug( 'CUSTOM PAGE CALLBACK SUCCEEDED', null,true );
+	debug( $params, null,true );
+}
+
+//***********	CLEAN URL	***********
+//*************************************
+
+// if url was http://example.com/blog/php/312 you'd get back "php:312"...
 
 
 debug( query_get_setting( 'current_theme' ), null,true );

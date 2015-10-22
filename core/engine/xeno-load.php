@@ -8,16 +8,19 @@
  * include core libraries.
  */
 include_once ( XENO_ROOT . '/site/settings.php' );
+
 include_once ( XENO_ROOT . '/core/engine/cls_db.php' );
 include_once ( XENO_ROOT . '/core/engine/cls_user.php' );
+include_once ( XENO_ROOT . '/core/engine/cls_hook.php' );
+include_once ( XENO_ROOT . '/core/engine/cls_router.php' );
 include_once ( XENO_ROOT . '/core/engine/cls_validate.php' );
 include_once ( XENO_ROOT . '/core/engine/cls_streamfile.php' );
-include_once ( XENO_ROOT . '/core/engine/cls_hook.php' );
+
+include_once ( XENO_ROOT . '/core/engine/lib_tpl.php' );
 include_once ( XENO_ROOT . '/core/engine/lib_query.php' );
+include_once ( XENO_ROOT . '/core/engine/lib_common.php' );
 include_once ( XENO_ROOT . '/core/engine/lib_formatting.php' );
 include_once ( XENO_ROOT . '/core/engine/lib_shortcodes.php' );
-include_once ( XENO_ROOT . '/core/engine/lib_common.php' );
-include_once ( XENO_ROOT . '/core/engine/lib_tpl.php' );
 
  
 /**
@@ -26,14 +29,14 @@ include_once ( XENO_ROOT . '/core/engine/lib_tpl.php' );
 $config = array_key_exists($_SERVER['SERVER_NAME'],$confgroup) ? $confgroup[$_SERVER['SERVER_NAME']] : $confgroup['default'];	//	get the config
 
 define( 'VERSION',			'1.0');
+define( 'DB_ENCODING',		'utf8' );
+define( 'XENO_STATUS',		$config['dev'] );
+define( 'DB_HOST',			$config['host'] );
+define( 'DB_PORT',			$config['port'] );
+define( 'DB_TABLE_PREFIX',	$config['prefix'] );
 define( 'DB_USER',			$config['username'] );
 define( 'DB_PASS',			$config['password'] );
 define( 'DB_NAME',			$config['database'] );
-define( 'DB_HOST',			$config['host'] );
-define( 'DB_PORT',			$config['port'] );
-define( 'DB_ENCODING',		'utf8' );
-define( 'DB_TABLE_PREFIX',	$config['prefix'] );
-define( 'XENO_STATUS',		$config['dev'] );
 
 /**
  * prepare database.
