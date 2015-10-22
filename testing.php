@@ -42,16 +42,16 @@ echo testing_hooks('LOCSICS');
 //***********	SHORTCODES	***********
 add_shortcode("quote", "quote");
 function quote( $atts, $content = null ) {
-    return '<div class="right text">"'.$content.'"</div>';
+		return '<div class="right text">"'.$content.'"</div>';
 }
 
 add_shortcode("alink", "alink");
 function alink($atts, $content = null) {
-    extract(shortcode_atts(array(
-        "to" => 'http://net.default.com',
-        "color" => 'green',
-    ), $atts));
-    return '<a href="'.$to.'" style="color: ' . $color . '">'.$content.'</a>';
+		extract(shortcode_atts(array(
+				"to" => 'http://net.default.com',
+				"color" => 'green',
+		), $atts));
+		return '<a href="'.$to.'" style="color: ' . $color . '">'.$content.'</a>';
 }
 
 function testing_shortcodes( $content ) {
@@ -63,6 +63,10 @@ echo testing_shortcodes( '<hr />Lorem ipsum dolor sit amet, consectetur adipisci
 //***********	SHORTCODES	***********
 //*************************************
 
+
+// Defining another route with regular expression param
+
+debug( request_path(), null,true );
 
 
 debug( query_get_setting( 'current_theme' ), null,true );
@@ -81,7 +85,7 @@ if ( isset( $_POST['action'] ) ) {
 }
 ?>
 HELP:
-<li><a href="documentation/database.html" target="_blank">DATABASE</a></li>
+<li><a href="_documentation" target="_blank">DOCUMENTATION</a></li>
 
 <form action="index.php" method="post">
 	<input type="hidden" name="action" value="login" />

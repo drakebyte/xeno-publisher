@@ -56,3 +56,46 @@ function sec_session_start() {
 function is_mobile() {
     return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up.browser|up.link|webos|wos)/i", $_SERVER['HTTP_USER_AGENT']);
 }
+
+/**
+ * Returns the requested URL path of the page being viewed.
+ *
+ * Examples:
+ * - http://example.com/node/306 returns "node/306".
+ * - http://example.com/drupalfolder/node/306 returns "node/306" while
+ *   base_path() returns "/drupalfolder/".
+ * - http://example.com/path/alias (which is a path alias for node/306) returns
+ *   "path/alias" as opposed to the internal path.
+ * - http://example.com/index.php returns an empty string (meaning: front page).
+ * - http://example.com/index.php?page=1 returns an empty string.
+ *
+ * @return
+ *   The requested Drupal URL path.
+ *
+ * @see current_path()
+ */
+function request_path() {
+	static $path;
+
+	if (isset($path)) {
+		return $path;
+	}
+
+	if (isset($_GET['q']) && is_string($_GET['q'])) {
+		$path = $_GET['q'];
+	}
+	elseif (isset($_SERVER['REQUEST_URI'])) {
+		$request_path = strtok($_SERVER['REQUEST_URI'], '?');
+		$base_path_len = strlen(rtrim(dirname($_SERVER['SCRIPT_NAME']), '\/'));
+		$path = substr(urldecode($request_path), $base_path_len + 1);
+		if ($path == basename($_SERVER['PHP_SELF'])) {
+			$path = '';
+		}
+	}
+	else {
+		$path = '';
+	}
+	$path = trim($path, '/');
+
+	return $path;
+}

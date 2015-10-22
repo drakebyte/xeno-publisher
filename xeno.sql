@@ -51,6 +51,27 @@ CREATE TABLE `languages` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 TRUNCATE `languages`;
+INSERT INTO `languages` (`lang_id`, `lang_code`, `lang_name`) VALUES
+(1,	'en',	'english');
+
+DROP TABLE IF EXISTS `login_attempts`;
+CREATE TABLE `login_attempts` (
+  `user_name` varchar(32) COLLATE utf8_bin NOT NULL,
+  `invalid_time` int(11) NOT NULL,
+  KEY `user_name` (`user_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+TRUNCATE `login_attempts`;
+INSERT INTO `login_attempts` (`user_name`, `invalid_time`) VALUES
+('admino',	1445381642),
+('admino',	1445381661),
+('admino',	1445381664),
+('admino',	1445381667),
+('admino',	1445381669),
+('admino',	1445381674),
+('admino',	1445381677),
+('admino',	1445381736),
+('admin <a>',	1445447966);
 
 DROP TABLE IF EXISTS `pod`;
 CREATE TABLE `pod` (
@@ -74,11 +95,13 @@ CREATE TABLE `podfields` (
   `field_name` varchar(32) COLLATE utf8_bin NOT NULL COMMENT 'Field name.',
   `lang_name` int(11) NOT NULL COMMENT 'Pod content language.',
   `field_content` longtext COLLATE utf8_bin NOT NULL COMMENT 'The field data to be displayed in the front end.',
+  `lang_id` int(11) NOT NULL DEFAULT '1' COMMENT 'Pod field language.',
   PRIMARY KEY (`field_id`),
   KEY `pod_id` (`pod_id`),
   KEY `lang_name` (`lang_name`),
+  KEY `lang_id` (`lang_id`),
   CONSTRAINT `podfields_ibfk_1` FOREIGN KEY (`pod_id`) REFERENCES `pod` (`pod_id`),
-  CONSTRAINT `podfields_ibfk_2` FOREIGN KEY (`lang_name`) REFERENCES `languages` (`lang_id`)
+  CONSTRAINT `podfields_ibfk_2` FOREIGN KEY (`lang_id`) REFERENCES `languages` (`lang_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 TRUNCATE `podfields`;
@@ -106,12 +129,14 @@ CREATE TABLE `users` (
   `user_created` int(11) NOT NULL COMMENT 'Timestamp for when user was created.',
   `user_login` int(11) NOT NULL COMMENT 'Timestamp for user’s last login.',
   `user_status` int(11) NOT NULL COMMENT 'Whether the user is active(1) or blocked(0).',
-  `lang_name` int(11) NOT NULL COMMENT 'User’s default language.',
+  `lang_id` int(11) NOT NULL DEFAULT '1' COMMENT 'User’s default language.',
   PRIMARY KEY (`user_id`),
-  KEY `lang_name` (`lang_name`),
-  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`lang_name`) REFERENCES `languages` (`lang_id`)
+  KEY `lang_id` (`lang_id`),
+  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`lang_id`) REFERENCES `languages` (`lang_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 TRUNCATE `users`;
+INSERT INTO `users` (`user_id`, `user_name`, `user_password`, `user_email`, `user_created`, `user_login`, `user_status`, `lang_id`) VALUES
+(1,	'admin',	'21232f297a57a5a743894a0e4a801fc3',	'admin@admin.com',	0,	0,	1,	1);
 
--- 2015-10-19 22:21:16
+-- 2015-10-22 14:32:28
