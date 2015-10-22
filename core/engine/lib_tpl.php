@@ -5,9 +5,9 @@ function tpl_render_page() {
 	$themename = tpl_get_theme_folder();
 	$themepage = tpl_get_page();
 	$extension = '.tpl.php';
-	include_once( '/public/' . $themename . '/front/header' . $extension );
-	include_once( '/public/' . $themename . '/front/' . $themepage . $extension );
-	include_once( '/public/' . $themename . '/front/footer' . $extension );
+	include_once( '/site/' . $themename . '/front/header' . $extension );
+	include_once( '/site/' . $themename . '/front/' . $themepage . $extension );
+	include_once( '/site/' . $themename . '/front/footer' . $extension );
 }
 
 function tpl_get_page() {
@@ -16,7 +16,7 @@ function tpl_get_page() {
 
 function tpl_get_theme_folder() {
 	$themename = query_get_setting( 'current_theme' );
-	if (file_exists( XENO_ROOT . '/public/' . $themename . '/info.txt' )) {
+	if (file_exists( XENO_ROOT . '/site/' . $themename . '/info.txt' )) {
 		return $themename;
 	}
 	return 'default';

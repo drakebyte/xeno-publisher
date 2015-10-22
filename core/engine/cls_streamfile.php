@@ -1,6 +1,6 @@
 <?php
 
-//	use StreamFile::serveFile( XENO_ROOT . '/uploads/protected/randomcontainer/sausage.jpg' );
+//	use StreamFile::serveFile( XENO_ROOT . '/vault/protected/randomcontainer/sausage.jpg' );
 class StreamFile {
 
 	public static function serveFile($filename) {

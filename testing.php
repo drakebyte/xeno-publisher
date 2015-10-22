@@ -1,7 +1,7 @@
 <!-- TEMPLATE ENDED. REDUNDANT PLACEHOLDER BELOW -->
-<link rel="stylesheet" type="text/css" href="ui/css/reset.css" media="screen" />
-<link rel="stylesheet" type="text/css" href="ui/css/fonts.css" media="screen" />
-<link rel="stylesheet" type="text/css" href="ui/css/style.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="/core/assets/css/reset.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="/core/assets/css/fonts.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="/core/assets/css/style.css" media="screen" />
 <body>
 <hr />
 <center>PAGE END</center>

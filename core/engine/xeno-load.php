@@ -7,17 +7,17 @@
 /**
  * include core libraries.
  */
-include_once ( XENO_ROOT . '/config/settings.php' );
-include_once ( XENO_ROOT . '/core/cls_db.php' );
-include_once ( XENO_ROOT . '/core/cls_user.php' );
-include_once ( XENO_ROOT . '/core/cls_validate.php' );
-include_once ( XENO_ROOT . '/core/cls_streamfile.php' );
-include_once ( XENO_ROOT . '/core/cls_hook.php' );
-include_once ( XENO_ROOT . '/core/lib_query.php' );
-include_once ( XENO_ROOT . '/core/lib_formatting.php' );
-include_once ( XENO_ROOT . '/core/lib_shortcodes.php' );
-include_once ( XENO_ROOT . '/core/lib_common.php' );
-include_once ( XENO_ROOT . '/core/lib_tpl.php' );
+include_once ( XENO_ROOT . '/site/settings.php' );
+include_once ( XENO_ROOT . '/core/engine/cls_db.php' );
+include_once ( XENO_ROOT . '/core/engine/cls_user.php' );
+include_once ( XENO_ROOT . '/core/engine/cls_validate.php' );
+include_once ( XENO_ROOT . '/core/engine/cls_streamfile.php' );
+include_once ( XENO_ROOT . '/core/engine/cls_hook.php' );
+include_once ( XENO_ROOT . '/core/engine/lib_query.php' );
+include_once ( XENO_ROOT . '/core/engine/lib_formatting.php' );
+include_once ( XENO_ROOT . '/core/engine/lib_shortcodes.php' );
+include_once ( XENO_ROOT . '/core/engine/lib_common.php' );
+include_once ( XENO_ROOT . '/core/engine/lib_tpl.php' );
 
  
 /**
