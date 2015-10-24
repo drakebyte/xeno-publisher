@@ -288,7 +288,7 @@ class XenoDB {
 		$query = str_replace( '%', $this->param_char, "UPDATE %b SET %? WHERE " ) . $where;
 		
 		array_unshift( $args, $params );
-		array_unshift( $args, $table );
+		array_unshift( $args, DB_TABLE_PREFIX . $table );
 		array_unshift( $args, $query );
 		return call_user_func_array( array( $this, 'query' ), $args );
 	}
@@ -315,12 +315,12 @@ class XenoDB {
 			if ( array_values( $options['update'] ) !== $options['update'] ) {
 				return $this->query( 
 					str_replace( '%', $this->param_char, "INSERT INTO %b %lb VALUES %? ON DUPLICATE KEY UPDATE %?" ), 
-					$table, $keys, $values, $options['update'] );
+					DB_TABLE_PREFIX . $table, $keys, $values, $options['update'] );
 			} else {
 				$update_str = array_shift( $options['update'] );
 				$query_param = array( 
 					str_replace( '%', $this->param_char, "INSERT INTO %b %lb VALUES %? ON DUPLICATE KEY UPDATE " ) . $update_str, 
-					$table, $keys, $values );
+					DB_TABLE_PREFIX . $table, $keys, $values );
 				$query_param = array_merge( $query_param, $options['update'] );
 				return call_user_func_array( array( $this, 'query' ), $query_param );
 			}
@@ -329,7 +329,7 @@ class XenoDB {
 		
 		return $this->query( 
 			str_replace( '%', $this->param_char, "%l INTO %b %lb VALUES %?" ), 
-			$which, $table, $keys, $values );
+			$which, DB_TABLE_PREFIX . $table, $keys, $values );
 	}
 	
 	public function insert( $table, $data ) { return $this->insertOrReplace( 'INSERT', $table, $data ); }
@@ -357,7 +357,7 @@ class XenoDB {
 	
 	public function delete() {
 		$args = func_get_args();
-		$table = $this->formatTableName( array_shift( $args ) );
+		$table = $this->formatTableName( DB_TABLE_PREFIX . array_shift( $args ) );
 		$where = array_shift( $args );
 		$buildquery = "DELETE FROM $table WHERE $where";
 		array_unshift( $args, $buildquery );
@@ -371,7 +371,7 @@ class XenoDB {
 	}
 	
 	public function columnList( $table ) {
-		return $this->queryOneColumn( 'Field', "SHOW COLUMNS FROM %b", $table );
+		return $this->queryOneColumn( 'Field', "SHOW COLUMNS FROM %b", DB_TABLE_PREFIX . $table );
 	}
 	
 	public function tableList( $db = null ) {
@@ -395,15 +395,16 @@ class XenoDB {
 		$param_char_length = strlen( $this->param_char );
 		$named_seperator_length = strlen( $this->named_param_seperator );
 		
-		$types = array( 
-			$this->param_char . 'll', //	list of literals
-			$this->param_char . 'ls', //	list of strings
+		$types = array(
+			$this->param_char . 'll',	//	list of literals
+			$this->param_char . 'ls',	//	list of strings
 			$this->param_char . 'l',	//	literal
-			$this->param_char . 'li', //	list of integers
-			$this->param_char . 'ld', //	list of decimals
-			$this->param_char . 'lb', //	list of backticks
-			$this->param_char . 'lt', //	list of timestamps
+			$this->param_char . 'li',	//	list of integers
+			$this->param_char . 'ld',	//	list of decimals
+			$this->param_char . 'lb',	//	list of backticks
+			$this->param_char . 'lt',	//	list of timestamps
 			$this->param_char . 's',	//	string
+			$this->param_char . 'a',	//	string
 			$this->param_char . 'i',	//	integer
 			$this->param_char . 'd',	//	double / decimal
 			$this->param_char . 'b',	//	backtick
