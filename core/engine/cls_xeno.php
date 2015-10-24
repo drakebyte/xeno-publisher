@@ -7,29 +7,18 @@
 		construct the user object
 */
 class Xeno {
-	
-	public $DB;
+
+	public $page;
 	public $Hook;
+	public $User;
 	public $SampleHookData;
 
     public function __construct()
     {
 		$this->Hook = new Hook;
-		
-		
-		
-		//	
-		
-		
-		
-		
+		$this->User = new User;
 		
 		
 		debug( 'cls Xeno initiated successfully', null,true );
     }
-	
-	public function FnWithHook() {
-		$this->SampleHookData = 'MAGIC: hook worked';
-		$this->Hook->do_action( 'xeno_init', $this->SampleHookData );
-	}
 }

@@ -10,10 +10,15 @@ C build the data
 V present the data
 Xeno
 	-	instantiate all general classes
-		-	hook
-		-	route
+		-	hook: prepare the hooks for use
+		-	route: get a usable query string from the url
+		-	user: generate user data if logged in, else do nothing
 decide which files to load for the page
 
+include or require neede files (to load all modifiers, list all hooks, add any variables needed for use.
+EVERYTHING needed later should be added to thr Xeno class
+
+generate the user
 generate page data object
 run hooks on data objects
 

@@ -12,14 +12,14 @@ USE `xeno`;
 DROP TABLE IF EXISTS `eventlog`;
 CREATE TABLE `eventlog` (
   `log_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key: Unique event log ID.',
-  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT 'The users.uid of the user who triggered the event.',
+  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT 'The user.uid of the user who triggered the event.',
   `log_type` varchar(64) COLLATE utf8_bin NOT NULL COMMENT 'Type of log message, for example "user" or "page not found."',
   `log_severity` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'The severity level of the event; ranges from 0 (Emergency) to 7 (Debug)',
   `log_referer` text COLLATE utf8_bin COMMENT 'URL of referring page.',
   `log_message` longtext COLLATE utf8_bin NOT NULL COMMENT 'Text of log message to be passed into the t() function.',
   PRIMARY KEY (`log_id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `eventlog_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+  CONSTRAINT `eventlog_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 TRUNCATE `eventlog`;
@@ -37,7 +37,7 @@ CREATE TABLE `files` (
   `file_type` varchar(11) COLLATE utf8_bin NOT NULL COMMENT 'The type of this file.',
   PRIMARY KEY (`file_id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `files_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+  CONSTRAINT `files_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 TRUNCATE `files`;
@@ -83,7 +83,7 @@ CREATE TABLE `pod` (
   `pod_modified` int(11) NOT NULL COMMENT 'The Unix timestamp when the pod was most recently saved.',
   PRIMARY KEY (`pod_id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `pod_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+  CONSTRAINT `pod_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 TRUNCATE `pod`;
@@ -106,6 +106,24 @@ CREATE TABLE `podfields` (
 
 TRUNCATE `podfields`;
 
+DROP TABLE IF EXISTS `role`;
+CREATE TABLE `role` (
+  `role_id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_name` varchar(32) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+TRUNCATE `role`;
+
+DROP TABLE IF EXISTS `role_permissions`;
+CREATE TABLE `role_permissions` (
+  `role_id` int(11) NOT NULL,
+  KEY `role_id` (`role_id`),
+  CONSTRAINT `role_permissions_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+TRUNCATE `role_permissions`;
+
 DROP TABLE IF EXISTS `settings`;
 CREATE TABLE `settings` (
   `setting_name` varchar(128) COLLATE utf8_bin NOT NULL COMMENT 'The name of the setting.',
@@ -116,12 +134,13 @@ CREATE TABLE `settings` (
 
 TRUNCATE `settings`;
 INSERT INTO `settings` (`setting_name`, `setting_value`) VALUES
+('admin_theme',	'queen'),
 ('current_theme',	'leonidas'),
 ('language',	'en'),
 ('secret',	'coelacantsaretastyfishies');
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users` (
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key: Unique user ID.',
   `user_name` varchar(32) COLLATE utf8_bin NOT NULL COMMENT 'Unique user name.',
   `user_password` varchar(32) COLLATE utf8_bin NOT NULL COMMENT 'User’s password (hashed).',
@@ -132,11 +151,23 @@ CREATE TABLE `users` (
   `lang_id` int(11) NOT NULL DEFAULT '1' COMMENT 'User’s default language.',
   PRIMARY KEY (`user_id`),
   KEY `lang_id` (`lang_id`),
-  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`lang_id`) REFERENCES `languages` (`lang_id`)
+  CONSTRAINT `user_ibfk_1` FOREIGN KEY (`lang_id`) REFERENCES `languages` (`lang_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-TRUNCATE `users`;
-INSERT INTO `users` (`user_id`, `user_name`, `user_password`, `user_email`, `user_created`, `user_login`, `user_status`, `lang_id`) VALUES
+TRUNCATE `user`;
+INSERT INTO `user` (`user_id`, `user_name`, `user_password`, `user_email`, `user_created`, `user_login`, `user_status`, `lang_id`) VALUES
 (1,	'admin',	'21232f297a57a5a743894a0e4a801fc3',	'admin@admin.com',	0,	0,	1,	1);
 
--- 2015-10-22 14:32:28
+DROP TABLE IF EXISTS `user_roles`;
+CREATE TABLE `user_roles` (
+  `user_id` int(11) NOT NULL COMMENT 'Primary Key: user.user_id for user.',
+  `role_id` int(11) NOT NULL COMMENT 'Primary Key: role.role_id for role.',
+  KEY `user_id` (`user_id`),
+  KEY `role_id` (`role_id`),
+  CONSTRAINT `user_roles_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
+  CONSTRAINT `user_roles_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+TRUNCATE `user_roles`;
+
+-- 2015-10-23 19:53:02

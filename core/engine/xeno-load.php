@@ -17,6 +17,7 @@ include_once ( XENO_CORE . '/engine/cls_user.php' );
 include_once ( XENO_CORE . '/engine/cls_query.php' );
 include_once ( XENO_CORE . '/engine/cls_router.php' );
 include_once ( XENO_CORE . '/engine/lib_common.php' );
+include_once ( XENO_CORE . '/engine/cls_validate.php' );
 
 define( 'VERSION',			'1.0');
 define( 'DB_ENCODING',		'utf8' );
@@ -39,21 +40,15 @@ sec_session_start();
 
 $Xeno = new Xeno;
 
-/*
-//	old
 
-include_once ( XENO_CORE . '/engine/cls_validate.php' );
+
+
+
+$Xeno->Hook->do_action( 'xeno_init', $Xeno );
+/*
 include_once ( XENO_CORE . '/engine/cls_streamfile.php' );
 
 include_once ( XENO_CORE . '/engine/lib_tpl.php' );
 include_once ( XENO_CORE . '/engine/lib_formatting.php' );
 include_once ( XENO_CORE . '/engine/lib_shortcodes.php' );
-
-
-$config = array_key_exists($_SERVER['SERVER_NAME'],$confgroup) ? $confgroup[$_SERVER['SERVER_NAME']] : $confgroup['default'];	//	get the config
-
-//	start a secure session
-
-// $hook = new Hook;
-// $user = new User;
 */
