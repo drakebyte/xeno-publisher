@@ -20,7 +20,7 @@ class User {
 	 
 			// Get the user-agent string of the user.
 			$user_browser = $_SERVER['HTTP_USER_AGENT'];
-			$password = DB::queryFirstField( query_prefix_table( "SELECT user_password FROM {users} WHERE user_id=%i" ), $user_id );
+			$password = DB::queryFirstField( "SELECT user_password FROM %b WHERE user_id=%i", 'user', $user_id );
 				if ($password) {
 					$login_check = md5($password . $user_browser);
 	 
@@ -53,7 +53,7 @@ class User {
 		}
 		
 		// Using prepared statements means that SQL injection is not possible.
-		$logged_user = DB::queryFirstRow( query_prefix_table( "SELECT * FROM {users} WHERE user_name=%s AND user_password=%s" ), $login['username'], md5($password) );
+		$logged_user = DB::queryFirstRow( query_prefix_table( "SELECT * FROM %b WHERE user_name=%s AND user_password=%s" ), 'user', $login['username'], md5($password) );
 		
 		if ($logged_user) {
 			// Password is correct!
@@ -131,11 +131,11 @@ class User {
 				$validation_errors[] = "INVALID EMAIL";
 			}
 			//	we don't need duplicates
-			if( DB::queryFirstField( query_prefix_table( "SELECT user_id FROM {users} WHERE user_name=%s" ), $newborn['username'] )) {
+			if( DB::queryFirstField( query_prefix_table( "SELECT user_id FROM %b WHERE user_name=%s" ), 'user', $newborn['username'] )) {
 				$validation_passed = false;
 				$validation_errors[] = "USER EXISTS";
 			}
-			if( DB::queryFirstField( query_prefix_table( "SELECT user_id FROM {users} WHERE user_email=%s" ), $newborn['email'] )) {
+			if( DB::queryFirstField( query_prefix_table( "SELECT user_id FROM %b WHERE user_email=%s" ), 'user', $newborn['email'] )) {
 				$validation_passed = false;
 				$validation_errors[] = "EMAIL EXISTS";
 			}
@@ -147,13 +147,13 @@ class User {
 			
 			// Insert the new user into the database
 			$newborn['encryptedpassword'] = md5($newborn['password']);
-			DB::insert(query_prefix_table('{users}'), array(
+			DB::insert('user', array(
 					  'user_name' => $newborn['username'],
 					  'user_password' => $newborn['encryptedpassword'],
 					  'user_email' => $newborn['email'],
 					  'user_created' => time(),
 					  'user_status' => 1,
-					  'lang_name' => 1,
+					  'lang_id' => 1,
 					));
 			$newborn['user_id'] = DB::insertId();
 			

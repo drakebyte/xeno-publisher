@@ -7,7 +7,24 @@
 <center>PAGE END</center>
 <hr />
 <?php
-//*************************************
+//	****************************/*\****************************
+//	*************************** MVC ***************************
+
+//	HOOK
+$Xeno->Hook->add_action( 'xeno_init','the_custom_hook_function' );
+function the_custom_hook_function( $somedata ){
+	debug( 'HOOK TRIGGERED with ' . $somedata, null,true );
+	return true;
+}
+
+
+
+
+
+//	*************************** MVC ***************************
+//	****************************\*/****************************
+exit;
+
 //***********	HOOKS	***************
 
 //	define a hook and use it
@@ -85,9 +102,6 @@ function rozsaszin($params) {
 //***********	CLEAN URL	***********
 //*************************************
 
-// if url was http://example.com/blog/php/312 you'd get back "php:312"...
-
-
 debug( query_get_setting( 'current_theme' ), null,true );
 debug( $_SESSION, null,true );
 // login_check();
@@ -102,6 +116,17 @@ if ( isset( $_POST['action'] ) ) {
 		$user->LogOut();
 	}
 }
+$someglob = new stdClass;
+$someglob->init = 'diszno';
+debug( $someglob, null,true );
+function change() {
+	global $someglob;
+	$someglob->init = 'locsics';
+	$someglob->added = 'kukisz';
+}
+change();
+debug( $someglob, null,true );
+
 ?>
 HELP:
 <li><a href="_documentation" target="_blank">DOCUMENTATION</a></li>

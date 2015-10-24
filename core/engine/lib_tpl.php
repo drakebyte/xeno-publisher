@@ -2,12 +2,12 @@
 
 //	Print the page
 function tpl_render_page() {
-	$themename = tpl_get_theme_folder();
+	$themepath = tpl_get_theme_folder();
 	$themepage = tpl_get_page();
 	$extension = '.tpl.php';
-	include_once( '/site/design/' . $themename . '/front/header' . $extension );
-	include_once( '/site/design/' . $themename . '/front/' . $themepage . $extension );
-	include_once( '/site/design/' . $themename . '/front/footer' . $extension );
+	include_once( $themepath . '/ui/header' . $extension );
+	include_once( $themepath . '/ui/' . $themepage . $extension );
+	include_once( $themepath . '/ui/footer' . $extension );
 }
 
 function tpl_get_page() {
@@ -16,10 +16,10 @@ function tpl_get_page() {
 
 function tpl_get_theme_folder() {
 	$themename = query_get_setting( 'current_theme' );
-	if (file_exists( XENO_ROOT . '/site/design/' . $themename . '/info.txt' )) {
-		return $themename;
+	if (file_exists( XENO_SITE . '/design/' . $themename . '/info.txt' )) {
+		return '/site/design/' . $themename;
 	}
-	return 'prime';
+	return '/core/design/prime';
 }
 
 function tpl_get_css() {

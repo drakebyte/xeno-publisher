@@ -4,3 +4,26 @@ multisite portability public/SITE, depending on config
 message system like drupal
 paginated query like wordpress
 import export pods menus settings etc
+
+M what do i want to do
+C build the data
+V present the data
+Xeno
+	-	instantiate all general classes
+		-	hook
+		-	route
+decide which files to load for the page
+
+generate page data object
+run hooks on data objects
+
+
+
+
+functions
+insert/update permissions on delete delete from role permissions also
+insert/update roles if exists leave permissions alone, on delete delete from role permissions also
+set permission for a role
+get permission for a role
+get permissions for a user
+get roles for a user

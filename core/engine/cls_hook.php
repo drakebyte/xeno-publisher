@@ -87,6 +87,7 @@ if (!class_exists('Hook')){
 			$this->merged_filters = array();
 			$this->actions = array();
 			$this->current_filter = array();
+			debug( 'cls Hook initiated successfully', null,true );
 		}
 
 		/**
