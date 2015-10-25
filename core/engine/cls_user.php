@@ -9,6 +9,7 @@ class User extends DB {
 	public function __construct() {
 		$this->auth = $this->CheckLoggedIn();
 		$this->BuildUserObject();
+		debug( 'USER: initialized', null,true );
 	}
 	private function CheckLoggedIn() {
 		// Check if all session variables are set 

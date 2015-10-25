@@ -21,6 +21,33 @@ debug( DB::columnList( 'user' ), null,true );
 
 
 //	****************************/*\****************************
+//	************************** ROUTER *************************
+//	every regex url part is a parameter for the function
+$Xeno->Router->Route( 'news/(\w+)/(\d+)',
+				array(
+					'access_level' => 'view_pods',
+					'path_callback' => 'rozsaszin',
+					'path_type' => 'function',
+				)
+	);
+function rozsaszin($params) {
+	debug( 'CUSTOM PAGE CALLBACK SUCCEEDED', null,true );
+	debug( $params, null,true );
+}
+function display_admin_menus($params) {
+	debug( 'ADMIN MENU SUCCEEDED', null,true );
+	debug( $params, null,true );
+}
+
+$Xeno->Router->execute();
+
+
+//	****************************\*/****************************
+
+
+
+
+//	****************************/*\****************************
 //	************************* DB query ************************
 $theme = XQuery::query_get_setting('current_theme');
 debug( $theme, null,true );

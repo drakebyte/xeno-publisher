@@ -11,14 +11,16 @@ class Xeno {
 	public $page;
 	public $Hook;
 	public $User;
+	public $Router;
 	public $SampleHookData;
 
     public function __construct()
     {
+		debug( 'XENO: initialized', null,true );
+		
+		
 		$this->Hook = new Hook;
 		$this->User = new User;
-		
-		
-		debug( 'cls Xeno initiated successfully', null,true );
+		$this->Router = new Router;
     }
 }

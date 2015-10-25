@@ -13,7 +13,7 @@ class Hook
 		$this->merged_filters = array();
 		$this->actions = array();
 		$this->current_filter = array();
-		debug( 'cls Hook initiated successfully', null,true );
+		debug( 'HOOK: initialized', null,true );
 	}
 
 	public function add_filter($tag, $function_to_add, $priority = 10, $accepted_args = 1) {
