@@ -8,11 +8,10 @@
 */
 class Xeno {
 
-	public $page;
-	public $Hook;
-	public $User;
 	public $Router;
-	public $SampleHookData;
+	public $User;
+	public $Hook;
+	public $Page;
 
     public function __construct()
     {
