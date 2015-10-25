@@ -54,7 +54,7 @@ function sec_session_start() {
 
 //	detect mobile devices
 function is_mobile() {
-    return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up.browser|up.link|webos|wos)/i", $_SERVER['HTTP_USER_AGENT']);
+	return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up.browser|up.link|webos|wos)/i", $_SERVER['HTTP_USER_AGENT']);
 }
 
 /**

@@ -11,15 +11,19 @@ class Xeno {
 	public $Router;
 	public $User;
 	public $Hook;
+	public $Assets;
+
+
 	public $Page;
 
-    public function __construct()
-    {
+	public function __construct()
+	{
 		debug( 'XENO: initialized', null,true );
 		
 		
-		$this->Hook = new Hook;
-		$this->User = new User;
 		$this->Router = new Router;
-    }
+		$this->User = new User;
+		$this->Hook = new Hook;
+		$this->Assets = new Assets;
+	}
 }

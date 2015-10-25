@@ -1,12 +1,61 @@
 <!-- TEMPLATE ENDED. REDUNDANT PLACEHOLDER BELOW -->
-<link rel="stylesheet" type="text/css" href="/core/assets/css/reset.css" media="screen" />
-<link rel="stylesheet" type="text/css" href="/core/assets/css/fonts.css" media="screen" />
-<link rel="stylesheet" type="text/css" href="/core/assets/css/style.css" media="screen" />
-<body>
 <hr />
 <center>TESTING DATA</center>
 <hr />
 <?php
+$timing->printElapsedTime();
+
+//	****************************/*\****************************
+//	************************* ASSETS **************************
+$Xeno->Assets->AddJS( 'jquery', XENO_URL . 'core/assets/js/jquery.js', 'footer' );
+$Xeno->Assets->AddJS( 'jquery.minicolors', XENO_URL . 'core/assets/js/jquery.minicolors.js', 'footer' );
+$Xeno->Assets->AddCSS( 'reset', XENO_URL . 'core/assets/css/reset.css', 'footer' );
+$Xeno->Assets->AddCSS( 'fonts', XENO_URL . 'core/assets/css/fonts.css', 'footer' );
+$Xeno->Assets->AddCSS( 'style', XENO_URL . 'core/assets/css/style.css', 'footer' );
+$Xeno->Assets->AddCSS( 'jquery.minicolors', XENO_URL . 'core/assets/css/jquery.minicolors.css', 'footer' );
+
+
+// $Xeno->Assets->Rebuild();	//	force rebuild minified assets
+$Xeno->Assets->PrintCSS();
+$Xeno->Assets->PrintJS( 'footer' );
+?>
+	<script>
+		$(document).ready( function() {
+			$('.colorfield').each( function() {
+				$(this).minicolors({
+					control: $(this).attr('data-control') || 'hue',
+					defaultValue: $(this).attr('data-defaultValue') || '',
+					format: $(this).attr('data-format') || 'hex',
+					keywords: $(this).attr('data-keywords') || '',
+					inline: $(this).attr('data-inline') === 'true',
+					letterCase: $(this).attr('data-letterCase') || 'lowercase',
+					opacity: $(this).attr('data-opacity'),
+					position: $(this).attr('data-position') || 'bottom left',
+					change: function(hex, opacity) {
+						var log;
+						try {
+							log = hex ? hex : 'transparent';
+							if( opacity ) log += ', ' + opacity;
+							console.log(log);
+						} catch(e) {}
+					},
+					theme: 'default'
+				});
+			});
+		});
+	</script>
+	<div class="form-group">
+		<label for="rgba">rgb(a)</label>
+		<br>
+		<input type="text" id="rgba" class="colorfield" data-format="rgb" data-opacity=".5" value="rgba(52, 64, 158, 0.5)">
+	</div>
+<?php
+$timing->printElapsedTime();
+//	****************************\*/****************************
+
+
+
+
 //	****************************/*\****************************
 //	************************* DB class ************************
 $password = DB::queryFirstField( "SELECT user_password FROM %b WHERE user_id=%i" , 'user', 1 );
@@ -14,7 +63,7 @@ debug( 'DB::example ' . $password, null,true );
 
 debug( DB::columnList( 'user' ), null,true );
 
-
+$timing->printElapsedTime();
 //	****************************\*/****************************
 
 
@@ -41,17 +90,17 @@ function display_admin_menus($params) {
 
 $Xeno->Router->execute();
 
-
+$timing->printElapsedTime();
 //	****************************\*/****************************
 
 
 
 
 //	****************************/*\****************************
-//	************************* DB query ************************
-$theme = XQuery::query_get_setting('current_theme');
+//	************************* XQuery **************************
+$theme = XQuery::get_setting('current_theme');
 debug( $theme, null,true );
-
+$timing->printElapsedTime();
 //	****************************\*/****************************
 
 
@@ -61,6 +110,7 @@ debug( $theme, null,true );
 //	****************************/*\****************************
 //	************************* SESSION *************************
 debug( $_SESSION, null,true );
+$timing->printElapsedTime();
 //	****************************\*/****************************
 
 
@@ -82,6 +132,7 @@ function FnWithHook() {
 }
 
 FnWithHook();
+$timing->printElapsedTime();
 //	****************************\*/****************************
 
 
@@ -96,6 +147,7 @@ Message::set('ichtyios message for a status', 'status');
 Message::set('ichtyios message for another warning', 'warning');
 
 echo Message::render();
+$timing->printElapsedTime();
 //	****************************\*/****************************
 
 
@@ -124,6 +176,7 @@ function testing_shortcodes( $content ) {
 }
 
 echo testing_shortcodes( '<hr />Lorem ipsum dolor sit amet, consectetur adipiscing elit. [quote]Nulla arcu quam, aliquet vitae ultrices nec, auctor ut dolor.[/quote] Etiam sagittis ante felis, a gravida nisl consectetur non. Quisque venenatis condimentum sem nec aliquet. Sed at dui eget urna bibendum rhoncus vel mollis sem. [alink to="http://www.net.tutsplus.com" color="red"]NetTuts+[/alink]' );
+$timing->printElapsedTime();
 //	****************************\*/****************************
 
 
@@ -169,8 +222,18 @@ if ( isset( $_POST['action'] ) ) {
 	<input type="hidden" name="action" value="logout" />
 	<input type="submit" value="Log Out" name="submit" />
 </form>
-</body>
 <?php
+$timing->printElapsedTime();
 //	****************************\*/****************************
 
-debug( $Xeno, null,true );
+// debug( $Xeno, null,true );
+
+	
+	// Stop/end timing
+	$timing->stop();
+
+	// Print only total execution time
+	$timing->printTotalExecutionTime();
+
+	// Print full stats
+	$timing->printFullStats();

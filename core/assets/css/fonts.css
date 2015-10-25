@@ -1,25 +1,25 @@
 @font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Open Sans'), local('OpenSans'), url(../fonts/OpenSans-Regular.woff2) format('woff2');
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Open Sans'), local('OpenSans'), url(/core/assets/fonts/OpenSans-Regular.woff2) format('woff2');
 }
 @font-face {
-  font-family: 'Open Sans';
-  font-style: italic;
-  font-weight: 400;
-  src: local('Open Sans Italic'), local('OpenSans-Italic'), url(../fonts/OpenSans-Italic.woff2) format('woff2');
+	font-family: 'Open Sans';
+	font-style: italic;
+	font-weight: 400;
+	src: local('Open Sans Italic'), local('OpenSans-Italic'), url(/core/assets/fonts/OpenSans-Italic.woff2) format('woff2');
 }
 @font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 700;
-  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(../fonts/OpenSans-Bold.woff2) format('woff2');
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 700;
+	src: local('Open Sans Bold'), local('OpenSans-Bold'), url(/core/assets/fonts/OpenSans-Bold.woff2) format('woff2');
 }
 
 @font-face {
-  font-family: 'Monaco';
-  src: local('Monaco'), local('Monaco'), url(../fonts/Monaco.woff2) format('woff2');
+	font-family: 'Monaco';
+	src: local('Monaco'), local('Monaco'), url(/core/assets/fonts/Monaco.woff2) format('woff2');
 }
 
 body {

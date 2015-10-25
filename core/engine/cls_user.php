@@ -1,6 +1,6 @@
 <?php
 
-class User extends DB {
+class User {
 	public $id = false;
 	public $name = false;
 	public $roles = false;

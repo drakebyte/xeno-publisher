@@ -14,13 +14,17 @@ include_once ( XENO_CORE . '/engine/cls_db.php' );
 include_once ( XENO_CORE . '/engine/cls_xeno.php' );
 include_once ( XENO_CORE . '/engine/cls_hook.php' );
 include_once ( XENO_CORE . '/engine/cls_user.php' );
+include_once ( XENO_CORE . '/engine/cls_timer.php' );
 include_once ( XENO_CORE . '/engine/cls_query.php' );
+include_once ( XENO_CORE . '/engine/cls_assets.php' );
 include_once ( XENO_CORE . '/engine/cls_router.php' );
 include_once ( XENO_CORE . '/engine/lib_common.php' );
 include_once ( XENO_CORE . '/engine/cls_message.php' );
 include_once ( XENO_CORE . '/engine/cls_validate.php' );
 
 //	conditional, move into context later
+include_once ( XENO_CORE . '/engine/cls_minifyjs.php' );
+include_once ( XENO_CORE . '/engine/cls_minifycss.php' );
 include_once ( XENO_CORE . '/engine/lib_shortcodes.php' );
 include_once ( XENO_CORE . '/engine/lib_formatting.php' );
 
@@ -43,13 +47,15 @@ DB::$encoding	=	DB_ENCODING;
 
 sec_session_start();
 
+$timing = new Timer("<br />\n");
+$timing->start();
 $Xeno = new Xeno;
 
 
+//	include all php oo and procedural files
 
 
-
-$Xeno->Hook->do_action( 'xeno_init', $Xeno );
+$Xeno->Hook->do_action( 'xeno_init', $Xeno );	//	do something before the page starts rendering.
 /*
 include_once ( XENO_CORE . '/engine/cls_streamfile.php' );
 

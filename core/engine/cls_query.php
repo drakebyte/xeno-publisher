@@ -2,7 +2,7 @@
 
 class XQuery {
 
-	public static function query_get_setting( $name = false ) {
+	public static function get_setting( $name = false ) {
 		if ( !$name ) {
 			return false;
 		}
@@ -10,7 +10,7 @@ class XQuery {
 		return $setting;
 	}
 	
-	public static function query_validate_secret() {
+	public static function validate_secret() {
 		if ( !empty( $_GET['secret'] ) && $_GET['secret'] == DB::queryOneField( 'setting_value', "SELECT * FROM %b WHERE setting_name=%s", 'settings', 'secret' )) {
 			return true;
 		}
