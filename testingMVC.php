@@ -59,7 +59,7 @@ debug( $theme, null,true );
 
 
 //	****************************/*\****************************
-//	************************* session *************************
+//	************************* SESSION *************************
 debug( $_SESSION, null,true );
 //	****************************\*/****************************
 
@@ -82,6 +82,20 @@ function FnWithHook() {
 }
 
 FnWithHook();
+//	****************************\*/****************************
+
+
+
+
+
+//	****************************/*\****************************
+//	************************ MESSAGES *************************
+Message::set('ichtyios message for a warning', 'warning');
+Message::set('ichtyios message for a error', 'error');
+Message::set('ichtyios message for a status', 'status');
+Message::set('ichtyios message for another warning', 'warning');
+
+echo Message::render();
 //	****************************\*/****************************
 
 

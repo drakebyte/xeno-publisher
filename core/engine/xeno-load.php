@@ -17,6 +17,7 @@ include_once ( XENO_CORE . '/engine/cls_user.php' );
 include_once ( XENO_CORE . '/engine/cls_query.php' );
 include_once ( XENO_CORE . '/engine/cls_router.php' );
 include_once ( XENO_CORE . '/engine/lib_common.php' );
+include_once ( XENO_CORE . '/engine/cls_message.php' );
 include_once ( XENO_CORE . '/engine/cls_validate.php' );
 
 define( 'VERSION',			'1.0');
