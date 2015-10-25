@@ -20,6 +20,10 @@ include_once ( XENO_CORE . '/engine/lib_common.php' );
 include_once ( XENO_CORE . '/engine/cls_message.php' );
 include_once ( XENO_CORE . '/engine/cls_validate.php' );
 
+//	conditional, move into context later
+include_once ( XENO_CORE . '/engine/lib_shortcodes.php' );
+include_once ( XENO_CORE . '/engine/lib_formatting.php' );
+
 define( 'VERSION',			'1.0');
 define( 'DB_ENCODING',		'utf8' );
 define( 'XENO_STATUS',		$config['dev'] );

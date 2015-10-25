@@ -103,6 +103,34 @@ echo Message::render();
 
 
 //	****************************/*\****************************
+//	*********************** SHORTCODES ************************
+
+add_shortcode("quote", "quote");
+function quote( $atts, $content = null ) {
+		return '<div class="right text">"'.$content.'"</div>';
+}
+
+add_shortcode("alink", "alink");
+function alink($atts, $content = null) {
+		extract(shortcode_atts(array(
+				"to" => 'http://net.default.com',
+				"color" => 'green',
+		), $atts));
+		return '<a href="'.$to.'" style="color: ' . $color . '">'.$content.'</a>';
+}
+
+function testing_shortcodes( $content ) {
+	return do_shortcode( $content );
+}
+
+echo testing_shortcodes( '<hr />Lorem ipsum dolor sit amet, consectetur adipiscing elit. [quote]Nulla arcu quam, aliquet vitae ultrices nec, auctor ut dolor.[/quote] Etiam sagittis ante felis, a gravida nisl consectetur non. Quisque venenatis condimentum sem nec aliquet. Sed at dui eget urna bibendum rhoncus vel mollis sem. [alink to="http://www.net.tutsplus.com" color="red"]NetTuts+[/alink]' );
+//	****************************\*/****************************
+
+
+
+
+
+//	****************************/*\****************************
 //	************************** USER **************************
 
 if ($Xeno->User->auth) {
