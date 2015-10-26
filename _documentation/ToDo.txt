@@ -1,26 +1,25 @@
 www non www redirect
-seo links redirect
-multisite portability public/SITE, depending on config
-message system like drupal
 paginated query like wordpress
 import export pods menus settings etc
 
-M what do i want to do
-C build the data
-V present the data
-Xeno
-	-	instantiate all general classes
-		-	hook: prepare the hooks for use
-		-	route: get a usable query string from the url
-		-	user: generate user data if logged in, else do nothing
-decide which files to load for the page
 
-include or require neede files (to load all modifiers, list all hooks, add any variables needed for use.
-EVERYTHING needed later should be added to thr Xeno class
+PAGE LIFETIME
+	Xeno
+		-	instantiate all general classes
+			-	hook: prepare the hooks for use
+			-	route: get a usable query string from the url
+			-	user: generate user data if logged in, else do nothing
+	decide which files to load for the page
 
-generate the user
-generate page data object
-run hooks on data objects
+	include or require neede files (to load all modifiers, list all hooks, add any variables needed for use.
+	EVERYTHING needed later should be added to thr Xeno class
+
+	generate the user
+	generate page data object
+	
+	LOAD every plugin and theme functions and overrides
+	
+	run hooks on data objects
 
 
 
@@ -32,3 +31,17 @@ set permission for a role
 get permission for a role
 get permissions for a user
 get roles for a user
+
+plugins/themes
+
+init.php
+	add permissions
+	add custom url's
+?	register new widget types
+	add new widgets
+
+plugin.php
+	add new hooks
+	add new filters
+	register widget types
+	register new content types

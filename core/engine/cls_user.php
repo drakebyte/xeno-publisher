@@ -68,9 +68,10 @@ class User {
 		}
 		
 		// Using prepared statements means that SQL injection is not possible.
-		$logged_user = DB::queryFirstRow( "SELECT * FROM %b WHERE user_name=%s AND user_password=%s" , 'user', $user['username'], md5($password) );
+		$logged_user = DB::queryFirstRow( "SELECT * FROM %b WHERE user_name=%s" , 'user', $user['username'] );
+		$password_verify = password_verify($password, $logged_user['user_password']);
 		
-		if ( $logged_user ) {
+		if ( $password_verify ) {
 			if ( $logged_user['user_status'] == 1 ) {
 			// Password is correct!
 			// Get the user-agent string of the user.
@@ -98,6 +99,7 @@ class User {
 					  'invalid_time' => $now
 					));
 			// No user exists.
+			debug( "LOGIN: FAILED", null,true );
 			return false;
 		}
 	}
@@ -163,7 +165,7 @@ class User {
 			}
 			
 			// Insert the new user into the database
-			$user['encryptedpassword'] = md5($user['password']);
+			$user['encryptedpassword'] = password_hash($user['password'], PASSWORD_BCRYPT);
 			DB::insert('user', array(
 					  'user_name' => $user['username'],
 					  'user_password' => $user['encryptedpassword'],
