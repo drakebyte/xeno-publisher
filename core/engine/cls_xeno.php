@@ -10,7 +10,6 @@ class Xeno {
 
 	public $Router;
 	public $User;
-	public $Hook;
 	public $Assets;
 
 
@@ -23,7 +22,6 @@ class Xeno {
 		
 		$this->Router = new Router;
 		$this->User = new User;
-		$this->Hook = new Hook;
 		$this->Assets = new Assets;
 	}
 }

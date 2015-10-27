@@ -119,7 +119,7 @@ $timing->printElapsedTime();
 
 //	****************************/*\****************************
 //	************************** HOOKS **************************
-$Xeno->Hook->add_action( 'xeno_init','the_custom_hook_function' );
+HOOK::add_action( 'xeno_init','the_custom_hook_function' );
 function the_custom_hook_function( $somedata ){
 	debug( $somedata, null,true );
 	return true;
@@ -128,7 +128,7 @@ function the_custom_hook_function( $somedata ){
 function FnWithHook() {
 	global $Xeno;
 	$SampleHookData = 'MAGIC: hook worked';
-	$Xeno->Hook->do_action( 'xeno_init', $SampleHookData );
+	HOOK::do_action( 'xeno_init', $SampleHookData );
 }
 
 FnWithHook();

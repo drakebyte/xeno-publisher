@@ -1,6 +1,7 @@
 www non www redirect
 paginated query like wordpress
 import export pods menus settings etc
+plugin, theme and core automatic update with cron, button, and ability to search them from the admin.
 
 
 PAGE LIFETIME

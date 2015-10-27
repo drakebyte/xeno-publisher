@@ -18,7 +18,7 @@ FLEXIBILITY
 RESPONSIVE
 	client or server side mobile device detection
 FREIANDLY INTERFACE AND EASY TO USE
-	
+	ability to automatically get updates for all exyentions and themes
 DEVELOPER-FRIENDLY STRUCTURE AND USEFUL HELPER FUNCTIONS
 	predefined form element validators both client and server sided
 	form builder with clean html output, support for 

@@ -55,7 +55,7 @@ $Xeno = new Xeno;
 //	include all php oo and procedural files
 
 
-$Xeno->Hook->do_action( 'xeno_init', $Xeno );	//	do something before the page starts rendering.
+// HOOK::do_action( 'xeno_init', $Xeno );	//	do something before the page starts rendering.
 /*
 include_once ( XENO_CORE . '/engine/cls_streamfile.php' );
 

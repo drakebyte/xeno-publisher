@@ -1,6 +1,22 @@
 <?php
 
-class Hook
+//	wrap the non-static hook into a static
+class HOOK {
+	
+	protected static $xhook = null;
+
+	public static function __callStatic( $name, $arguments ) {
+		$xhook = HOOK::$xhook;
+		
+		if ( $xhook === null ) {
+			$xhook = HOOK::$xhook = new XenoHook();
+			call_user_func_array(array($xhook, $name), $arguments);	//	ugly but short method to call a variable method from another class, correctly passing the arguments though
+		}
+	}	
+}
+
+
+class XenoHook
 {
 	var $filters = array();
 	var $merged_filters = array();
