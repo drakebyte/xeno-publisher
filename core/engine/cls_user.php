@@ -1,10 +1,16 @@
 <?php
 
 class User {
-	public $id = false;
-	public $name = false;
-	public $roles = false;
-	public $auth = false;
+	public $id		= false;
+	public $name	= false;
+	public $email	= false;
+	public $created	= false;
+	public $login	= false;
+	public $status	= false;
+	public $lang	= false;
+	public $auth	= false;
+	public $role	= array();
+	public $perm	= array();
 	
 	public function __construct() {
 		$this->auth = $this->CheckLoggedIn();
@@ -49,6 +55,9 @@ class User {
 			$this->login = $user['user_login'];
 			$this->status = $user['user_status'];
 			$this->lang = $user['lang_id'];
+			
+			$this->role = $this->updateRole();
+			$this->perm = $this->updatePermission();
 		}
 		return false;
 	}
@@ -181,7 +190,7 @@ class User {
 		}
 	}
 	
-
+//	SECURITY
 	public function CheckBrute($user_name) {
 		$now = time();
 		$valid_attempts_timeframe = $now - (2 * 60 * 60);	// All login attempts are counted from the past 2 hours.
@@ -192,5 +201,44 @@ class User {
 		} else {
 			return false;
 		}
+	}
+//	PERMISSION	
+	public function getPermission( $permission ) {
+		return false;
+	}
+	
+	public function setPermission( $permission ) {
+		return false;
+	}
+	
+	public function updatePermission() {
+		if ( $this->id ) {
+			$permissions = DB::query( "select perm_name from %b JOIN permission ON role_permissions.perm_id = permission.perm_id where role_id IN %li", 'role_permissions', $this->role );
+			foreach ($permissions as $k => $v) {
+				$permlist[] = $v['perm_name'];
+			}
+			return array_values( array_unique( $permlist ));
+		}
+		return false;
+	}
+
+//	ROLE
+	public function getRole( $role ) {
+		return false;
+	}
+	
+	public function setRole( $role ) {
+		return false;
+	}
+	
+	public function updateRole() {
+		if ( $this->id ) {
+			$roles = DB::query( "SELECT role_id FROM %b WHERE user_id = %i", 'user_roles', $this->id );
+			foreach ($roles as $k => $v) {
+				$rolelist[] = $v['role_id'];
+			}
+			return array_unique( $rolelist );
+		}
+		return false;
 	}
 }

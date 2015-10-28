@@ -61,7 +61,7 @@ $timing->printElapsedTime();
 $password = DB::queryFirstField( "SELECT user_password FROM %b WHERE user_id=%i" , 'user', 1 );
 debug( 'DB::example ' . $password, null,true );
 
-debug( DB::columnList( 'user' ), null,true );
+debug( $Xeno->User->perm, null,true );
 
 $timing->printElapsedTime();
 //	****************************\*/****************************

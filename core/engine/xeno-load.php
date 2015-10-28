@@ -1,12 +1,14 @@
 <?php
 /**
- * @file
- * Functions and variables that need to be loaded on every request.
- */
+* Start Up Xeno
+*
+* Include files needed for every boot-up
+* Start a secure session
+* Build up and prepare the main object for the current page
+* Include all plugin and theme *function* files
+* Continue in xeno-prepare.php
+*/
 
-/**
- * include most important files
- */
 include_once ( XENO_SITE . '/settings.php' );
 $config = array_key_exists($_SERVER['SERVER_NAME'],$confgroup) ? $confgroup[$_SERVER['SERVER_NAME']] : $confgroup['default'];
 
@@ -27,6 +29,7 @@ include_once ( XENO_CORE . '/engine/cls_minifyjs.php' );
 include_once ( XENO_CORE . '/engine/cls_minifycss.php' );
 include_once ( XENO_CORE . '/engine/lib_shortcodes.php' );
 include_once ( XENO_CORE . '/engine/lib_formatting.php' );
+include_once ( XENO_CORE . '/engine/cls_streamfile.php' );
 
 define( 'VERSION',			'1.0');
 define( 'DB_ENCODING',		'utf8' );
@@ -57,7 +60,6 @@ $Xeno = new Xeno;
 
 // HOOK::do_action( 'xeno_init', $Xeno );	//	do something before the page starts rendering.
 /*
-include_once ( XENO_CORE . '/engine/cls_streamfile.php' );
 
 include_once ( XENO_CORE . '/engine/lib_tpl.php' );
 include_once ( XENO_CORE . '/engine/lib_formatting.php' );
