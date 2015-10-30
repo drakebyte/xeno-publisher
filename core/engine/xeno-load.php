@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Start Up Xeno
 *
@@ -16,6 +17,7 @@ include_once ( XENO_CORE . '/engine/cls_db.php' );
 include_once ( XENO_CORE . '/engine/cls_xeno.php' );
 include_once ( XENO_CORE . '/engine/cls_hook.php' );
 include_once ( XENO_CORE . '/engine/cls_user.php' );
+include_once ( XENO_CORE . '/engine/cls_page.php' );
 include_once ( XENO_CORE . '/engine/cls_timer.php' );
 include_once ( XENO_CORE . '/engine/cls_query.php' );
 include_once ( XENO_CORE . '/engine/cls_assets.php' );
@@ -30,6 +32,9 @@ include_once ( XENO_CORE . '/engine/cls_minifycss.php' );
 include_once ( XENO_CORE . '/engine/lib_shortcodes.php' );
 include_once ( XENO_CORE . '/engine/lib_formatting.php' );
 include_once ( XENO_CORE . '/engine/cls_streamfile.php' );
+
+include_once ( XENO_CORE . '/control/home.php' );
+include_once ( XENO_CORE . '/control/dashboard.php' );
 
 define( 'VERSION',			'1.0');
 define( 'DB_ENCODING',		'utf8' );
@@ -56,12 +61,4 @@ $Xeno = new Xeno;
 
 
 //	include all php oo and procedural files
-
-
-// HOOK::do_action( 'xeno_init', $Xeno );	//	do something before the page starts rendering.
-/*
-
-include_once ( XENO_CORE . '/engine/lib_tpl.php' );
-include_once ( XENO_CORE . '/engine/lib_formatting.php' );
-include_once ( XENO_CORE . '/engine/lib_shortcodes.php' );
-*/
+include_once ( XENO_CORE . '/example/plugins.php' );

@@ -12,9 +12,5 @@ include_once ( XENO_ROOT . '/core/engine/xeno-load.php' );
 include_once ( XENO_ROOT . '/core/engine/xeno-prepare.php' );
 include_once ( XENO_ROOT . '/core/engine/xeno-render.php' );
 
-// xeno_prepare_content();
-// xeno_apply_hooks();
-// tpl_render_page();
-
 //	testing stuff
 include_once ( XENO_ROOT . '/testingMVC.php' );

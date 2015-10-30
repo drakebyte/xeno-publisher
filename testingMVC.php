@@ -7,17 +7,11 @@ $timing->printElapsedTime();
 
 //	****************************/*\****************************
 //	************************* ASSETS **************************
-$Xeno->Assets->AddJS( 'jquery', XENO_URL . 'core/assets/js/jquery.js', 'footer' );
-$Xeno->Assets->AddJS( 'jquery.minicolors', XENO_URL . 'core/assets/js/jquery.minicolors.js', 'footer' );
-$Xeno->Assets->AddCSS( 'reset', XENO_URL . 'core/assets/css/reset.css', 'footer' );
-$Xeno->Assets->AddCSS( 'fonts', XENO_URL . 'core/assets/css/fonts.css', 'footer' );
-$Xeno->Assets->AddCSS( 'style', XENO_URL . 'core/assets/css/style.css', 'footer' );
-$Xeno->Assets->AddCSS( 'jquery.minicolors', XENO_URL . 'core/assets/css/jquery.minicolors.css', 'footer' );
-
 
 // $Xeno->Assets->Rebuild();	//	force rebuild minified assets
 $Xeno->Assets->PrintCSS();
 $Xeno->Assets->PrintJS( 'footer' );
+exit;
 ?>
 	<script>
 		$(document).ready( function() {
@@ -72,25 +66,25 @@ $timing->printElapsedTime();
 //	****************************/*\****************************
 //	************************** ROUTER *************************
 //	every regex url part is a parameter for the function
-$Xeno->Router->Route( 'news/(\w+)/(\d+)',
-				array(
-					'access_level' => 'view_pods',
-					'path_callback' => 'rozsaszin',
-					'path_type' => 'function',
-				)
-	);
-function rozsaszin($params) {
-	debug( 'CUSTOM PAGE CALLBACK SUCCEEDED', null,true );
-	debug( $params, null,true );
-}
-function display_admin_menus($params) {
-	debug( 'ADMIN MENU SUCCEEDED', null,true );
-	debug( $params, null,true );
-}
+// $Xeno->Router->Route( 'news/(\w+)/(\d+)',
+				// array(
+					// 'access_level' => 'view_pods',
+					// 'path_callback' => 'rozsaszin',
+					// 'path_type' => 'function',
+				// )
+	// );
+// function rozsaszin($params) {
+	// debug( 'CUSTOM PAGE CALLBACK SUCCEEDED', null,true );
+	// debug( $params, null,true );
+// }
+// function display_admin_menus($params) {
+	// debug( 'ADMIN MENU SUCCEEDED', null,true );
+	// debug( $params, null,true );
+// }
 
-$Xeno->Router->execute();
+// $Xeno->Router->execute();
 
-$timing->printElapsedTime();
+// $timing->printElapsedTime();
 //	****************************\*/****************************
 
 
@@ -205,20 +199,20 @@ if ( isset( $_POST['action'] ) ) {
 }
 
 ?>
-<form action="index.php" method="post">
+<form action="" method="post">
 	<input type="hidden" name="action" value="login" />
 	<label for="username">Username</label><input id="username" type="text" value="admin" name="username" />
 	<label for="password">Password</label><input id="password" type="text" value="admin" name="password" />
 	<input type="submit" value="Log In" name="submit" />
 </form>
-<form action="index.php" method="post">
+<form action="" method="post">
 	<input type="hidden" name="action" value="register" />
 	<label for="username">Username</label><input id="username" type="text" value="admin" name="username" />
 	<label for="password">Password</label><input id="password" type="text" value="admin" name="password" />
 	<label for="email">Email</label><input id="email" type="text" value="admin@admin.com" name="email" />
 	<input type="submit" value="Register" name="submit" />
 </form>
-<form action="index.php" method="post">
+<form action="" method="post">
 	<input type="hidden" name="action" value="logout" />
 	<input type="submit" value="Log Out" name="submit" />
 </form>

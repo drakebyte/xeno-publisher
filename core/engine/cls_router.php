@@ -4,6 +4,8 @@ class Router {
 	
 	public $path = false;
 	public $routes = array();
+	public $callback = array();
+	public $params = array();
 	
 	public function __construct() {
 		$this->RouteInit();
@@ -11,33 +13,38 @@ class Router {
 	}
 	
 	public function RouteInit() {
-		$DBroutes = DB::query( "SELECT * FROM %b", 'path' );
-		foreach ($DBroutes as $k => $v) {
-			debug( $v, null,true );
-			$pattern = '/^' . str_replace('/', '\/', $v['path_url']) . '$/';
-			$this->routes[$pattern] = $v;
-		}
+		return false;
 	}
 	
-	public function Route($pattern, $callback) {
+	public function getRoutes() {
+		$DBroutes = DB::query( "SELECT * FROM %b", 'path' );
+		foreach ($DBroutes as $k => $v) {
+			$pattern = '/^' . str_replace('/', '\/', $v['path_url']) . '$/';
+			$routelist[$pattern] = $v;
+		}
+		return $routelist;
+	}
+	
+	public function route($pattern, $callback) {
 		$pattern = '/^' . str_replace('/', '\/', $pattern) . '$/';
 		$this->routes[$pattern] = $callback;
 	}
 	
-	public function Execute() {
-		debug( $this->routes, null,true );
-		foreach ( $this->routes as $pattern => $callback ) {
+	public function execute($Xeno) {
+		$Xeno->Page->title = 'MODIFIED THE PAGE CONTENT';
+		$routelist = array_merge( $this->getRoutes(), $this->routes );
+		$this->path = $this->path ? $this->path : 'home';
+		foreach ( $routelist as $pattern => $callback ) {
 			if (preg_match($pattern, $this->path, $params)) {
-				array_shift($params);
-				switch ($callback['path_type']) {
-					case 'function':
-						return call_user_func($callback['path_callback'], $params);
-						break;
-					default:
-						debug( $callback['path_type'] . ' IS NOT A VALID CALLBACK TYPE', null,true );
-				}
+				$this->callback = $callback;
+				$this->params = $params;
+				return true;
 			}
 		}
+		$this->callback = array(
+				'path_type' => 'error',
+				'path_callback' => '404',
+			);
 		debug( $this->path . ' IS NOT A VALID PATH', null,true );
 	}
 	public function RequestPath() {
