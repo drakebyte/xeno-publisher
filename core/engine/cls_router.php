@@ -3,6 +3,7 @@
 class Router {
 	
 	public $path = false;
+	public $theme = false;
 	public $routes = array();
 	public $callback = array();
 	public $params = array();
@@ -10,6 +11,7 @@ class Router {
 	public function __construct() {
 		$this->RouteInit();
 		$this->RequestPath();
+		$this->getTheme();
 	}
 	
 	public function RouteInit() {
@@ -47,6 +49,15 @@ class Router {
 			);
 		debug( $this->path . ' IS NOT A VALID PATH', null,true );
 	}
+	
+	public function getTheme() {
+		if( strpos( $this->path, 'dashboard' ) === 0) {
+			$this->theme = 'admin';
+		} else {
+			$this->theme = 'front';
+		}
+	}
+	
 	public function RequestPath() {
 
 		if (isset($_GET['q']) && is_string($_GET['q'])) {

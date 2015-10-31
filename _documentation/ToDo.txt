@@ -8,6 +8,8 @@ form builder with
 	extendible
 	ajax submission
 
+string translation
+
 
 PAGE LIFETIME
 	Xeno

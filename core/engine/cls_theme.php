@@ -1,31 +1,27 @@
 <?php
 
-//	Print the page
-function tpl_render_page() {
-	$themepath = tpl_get_theme_folder();
-	$themepage = tpl_get_page();
-	$extension = '.tpl.php';
-	include_once( $themepath . '/ui/header' . $extension );
-	include_once( $themepath . '/ui/' . $themepage . $extension );
-	include_once( $themepath . '/ui/footer' . $extension );
-}
+class Theme {
+	public $name;
+	public $dir;
+	public $url;
+	
+	public function setTheme($type) {
+		if ( $type == 'admin' ) {
+			$this->name = XQuery::get_setting( 'theme_admin' );
+		} else {
+			$this->name = XQuery::get_setting( 'theme_front' );
+		}
 
-function tpl_get_page() {
-	return 'page';
-}
-
-function tpl_get_theme_folder() {
-	$themename = query_get_setting( 'current_theme' );
-	if (file_exists( XENO_SITE . '/design/' . $themename . '/info.txt' )) {
-		return '/site/design/' . $themename;
+		$themefolder = XENO_SITE . '/themes/';
+		if (file_exists( $themefolder . $this->name . '/theme.php' )) {
+			$this->dir = XENO_SITE . '/themes/' . $this->name;
+			$this->url = XENO_URL . 'site/themes/' . $this->name;
+		} elseif ($type == 'admin') {
+			$this->dir = XENO_SITE . '/themes/queen';
+			$this->url = XENO_URL . 'site/themes/queen';
+		} else {
+			$this->dir = XENO_SITE . '/themes/prime';
+			$this->url = XENO_URL . 'site/themes/prime';
+		}
 	}
-	return '/core/design/prime';
-}
-
-function tpl_get_css() {
-	return;
-}
-
-function tpl_get_js( $location ) {
-	return;
 }

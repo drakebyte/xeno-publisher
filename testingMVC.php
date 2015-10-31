@@ -8,43 +8,8 @@ $timing->printElapsedTime();
 //	****************************/*\****************************
 //	************************* ASSETS **************************
 
-// $Xeno->Assets->Rebuild();	//	force rebuild minified assets
-$Xeno->Assets->PrintCSS();
-$Xeno->Assets->PrintJS( 'footer' );
+
 exit;
-?>
-	<script>
-		$(document).ready( function() {
-			$('.colorfield').each( function() {
-				$(this).minicolors({
-					control: $(this).attr('data-control') || 'hue',
-					defaultValue: $(this).attr('data-defaultValue') || '',
-					format: $(this).attr('data-format') || 'hex',
-					keywords: $(this).attr('data-keywords') || '',
-					inline: $(this).attr('data-inline') === 'true',
-					letterCase: $(this).attr('data-letterCase') || 'lowercase',
-					opacity: $(this).attr('data-opacity'),
-					position: $(this).attr('data-position') || 'bottom left',
-					change: function(hex, opacity) {
-						var log;
-						try {
-							log = hex ? hex : 'transparent';
-							if( opacity ) log += ', ' + opacity;
-							console.log(log);
-						} catch(e) {}
-					},
-					theme: 'default'
-				});
-			});
-		});
-	</script>
-	<div class="form-group">
-		<label for="rgba">rgb(a)</label>
-		<br>
-		<input type="text" id="rgba" class="colorfield" data-format="rgb" data-opacity=".5" value="rgba(52, 64, 158, 0.5)">
-	</div>
-<?php
-$timing->printElapsedTime();
 //	****************************\*/****************************
 
 

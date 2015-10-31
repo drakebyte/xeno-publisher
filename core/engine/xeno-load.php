@@ -19,6 +19,7 @@ include_once ( XENO_CORE . '/engine/cls_hook.php' );
 include_once ( XENO_CORE . '/engine/cls_user.php' );
 include_once ( XENO_CORE . '/engine/cls_page.php' );
 include_once ( XENO_CORE . '/engine/cls_timer.php' );
+include_once ( XENO_CORE . '/engine/cls_theme.php' );
 include_once ( XENO_CORE . '/engine/cls_query.php' );
 include_once ( XENO_CORE . '/engine/cls_assets.php' );
 include_once ( XENO_CORE . '/engine/cls_router.php' );

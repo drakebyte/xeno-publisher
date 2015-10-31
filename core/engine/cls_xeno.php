@@ -12,15 +12,17 @@
 class Xeno {
 
 	public $Router;
+	public $Theme;
 	public $User;
 	public $Assets;
 	public $Page;
 
 	public function __construct()
 	{
-		$this->Router = new Router( $this );
-		$this->User = new User( $this );
-		$this->Assets = new Assets( $this );
-		$this->Page = new Page( $this );
+		$this->Router = new Router;
+		$this->Theme = new Theme;
+		$this->User = new User;
+		$this->Assets = new Assets;
+		$this->Page = new Page;
 	}
 }

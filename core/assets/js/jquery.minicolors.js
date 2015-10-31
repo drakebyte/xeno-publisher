@@ -1,13 +1,13 @@
 /*
- * jQuery MiniColors: A tiny color picker built on jQuery
- *
- * Copyright: Cory LaViska for A Beautiful Site, LLC: http://www.abeautifulsite.net/
- *
- * Contribute: https://github.com/claviska/jquery-minicolors
- *
- * @license: http://opensource.org/licenses/MIT
- *
- */
+* jQuery MiniColors: A tiny color picker built on jQuery
+* USAGE:
+*	<div class="form-group">
+*		<label for="rgba">rgb(a)</label>
+*		<br>
+*		<input type="text" id="rgba" class="colorfield" data-format="rgb" data-opacity=".5" value="rgba(52, 64, 158, 0.5)">
+*	</div>
+*
+*/
 (function (factory) {
     /* jshint ignore:start */
     if (typeof define === 'function' && define.amd) {
@@ -1035,3 +1035,28 @@
         });
 
 }));
+
+//	instanciate the color field script. this was inline originally but we don't like that
+$(document).ready( function() {
+	$('.colorfield').each( function() {
+		$(this).minicolors({
+			control: $(this).attr('data-control') || 'hue',
+			defaultValue: $(this).attr('data-defaultValue') || '',
+			format: $(this).attr('data-format') || 'hex',
+			keywords: $(this).attr('data-keywords') || '',
+			inline: $(this).attr('data-inline') === 'true',
+			letterCase: $(this).attr('data-letterCase') || 'lowercase',
+			opacity: $(this).attr('data-opacity'),
+			position: $(this).attr('data-position') || 'bottom left',
+			change: function(hex, opacity) {
+				var log;
+				try {
+					log = hex ? hex : 'transparent';
+					if( opacity ) log += ', ' + opacity;
+					console.log(log);
+				} catch(e) {}
+			},
+			theme: 'default'
+		});
+	});
+});
