@@ -63,15 +63,87 @@ CREATE TABLE `login_attempts` (
 
 TRUNCATE `login_attempts`;
 INSERT INTO `login_attempts` (`user_name`, `invalid_time`) VALUES
-('admino',	1445381642),
-('admino',	1445381661),
-('admino',	1445381664),
-('admino',	1445381667),
-('admino',	1445381669),
-('admino',	1445381674),
-('admino',	1445381677),
-('admino',	1445381736),
-('admin <a>',	1445447966);
+('admin',	1445871126);
+
+DROP TABLE IF EXISTS `menu`;
+CREATE TABLE `menu` (
+  `menu_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique menu id.',
+  `menu_name` varchar(32) COLLATE utf8_bin NOT NULL COMMENT 'Unique machine-readable menu name.',
+  `menu_title` varchar(255) COLLATE utf8_bin NOT NULL COMMENT 'Human-readable title of the men. Appears as the title of the menu widgets.',
+  `menu_desc` text COLLATE utf8_bin NOT NULL COMMENT 'Description of the menu.',
+  PRIMARY KEY (`menu_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+TRUNCATE `menu`;
+INSERT INTO `menu` (`menu_id`, `menu_name`, `menu_title`, `menu_desc`) VALUES
+(1,	'main-menu',	'Main Navigation',	'The main menu for the navigating the content.'),
+(2,	'dashboard-menu',	'The dasboard menu.',	'Every administrative menu should live here.');
+
+DROP TABLE IF EXISTS `menu_links`;
+CREATE TABLE `menu_links` (
+  `link_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique link id.',
+  `link_parent` int(11) NOT NULL DEFAULT '0' COMMENT 'The link id of the parent link',
+  `menu_id` int(11) NOT NULL COMMENT 'The id of the menu that contains this item.',
+  `link_path` varchar(255) COLLATE utf8_bin NOT NULL COMMENT 'The path of the page it links to. For placeholder this will not be rendered.',
+  `link_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '0 = hidden / 1 = visible',
+  `link_type` int(11) NOT NULL DEFAULT '0' COMMENT '0 = page link / 1 = external link / 2 = placeholder',
+  PRIMARY KEY (`link_id`),
+  KEY `menu_id` (`menu_id`),
+  CONSTRAINT `menu_links_ibfk_1` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`menu_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+TRUNCATE `menu_links`;
+INSERT INTO `menu_links` (`link_id`, `link_parent`, `menu_id`, `link_path`, `link_status`, `link_type`) VALUES
+(1,	0,	1,	'node/1',	1,	0),
+(2,	0,	2,	'dashboard',	1,	0);
+
+DROP TABLE IF EXISTS `path`;
+CREATE TABLE `path` (
+  `path_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Custom Path ID.',
+  `path_url` varchar(255) COLLATE utf8_bin NOT NULL COMMENT 'Path this entry describes',
+  `path_title` varchar(255) COLLATE utf8_bin NOT NULL COMMENT 'The title of the path (optional), can be set/overridden from code also.',
+  `path_type` varchar(255) COLLATE utf8_bin NOT NULL COMMENT 'The type of the callback. Ex.: function',
+  `path_callback` varchar(255) COLLATE utf8_bin NOT NULL COMMENT 'The function  to be executed for this pages'' content.',
+  `access_level` varchar(255) COLLATE utf8_bin NOT NULL COMMENT 'The permission needed to access this page.',
+  PRIMARY KEY (`path_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+TRUNCATE `path`;
+INSERT INTO `path` (`path_id`, `path_url`, `path_title`, `path_type`, `path_callback`, `access_level`) VALUES
+(1,	'dashboard',	'Dashboard',	'function',	'display_dashboard',	'admin_access'),
+(2,	'dashboard/(\\w+)',	'Admin the menus',	'function',	'display_admin_menus',	'admin_access'),
+(3,	'home',	'Home Page',	'function',	'display_home',	'base_access'),
+(4,	'pod/(\\w+)',	'Pod',	'pod',	'1',	'base_access');
+
+DROP TABLE IF EXISTS `path_alias`;
+CREATE TABLE `path_alias` (
+  `alias_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'A unique path alias identifier.',
+  `pod_id` int(10) NOT NULL COMMENT 'The Pod this alias is for.',
+  `alias_path` varchar(255) COLLATE utf8_bin NOT NULL COMMENT 'The alias for this path; e.g. title-of-the-story.',
+  `lang_id` int(11) NOT NULL COMMENT 'Language id for the alias',
+  PRIMARY KEY (`alias_id`),
+  KEY `pod_id` (`pod_id`),
+  KEY `lang_id` (`lang_id`),
+  CONSTRAINT `path_alias_ibfk_1` FOREIGN KEY (`pod_id`) REFERENCES `pod` (`pod_id`),
+  CONSTRAINT `path_alias_ibfk_2` FOREIGN KEY (`lang_id`) REFERENCES `languages` (`lang_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+TRUNCATE `path_alias`;
+
+DROP TABLE IF EXISTS `permission`;
+CREATE TABLE `permission` (
+  `perm_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Permission id.',
+  `perm_name` varchar(32) COLLATE utf8_bin NOT NULL COMMENT 'Permission name.',
+  PRIMARY KEY (`perm_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+TRUNCATE `permission`;
+INSERT INTO `permission` (`perm_id`, `perm_name`) VALUES
+(1,	'view_pod'),
+(2,	'edit_pod'),
+(3,	'edit_own_pod'),
+(4,	'add_pod'),
+(5,	'admin_access');
 
 DROP TABLE IF EXISTS `pod`;
 CREATE TABLE `pod` (
@@ -87,6 +159,8 @@ CREATE TABLE `pod` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 TRUNCATE `pod`;
+INSERT INTO `pod` (`pod_id`, `pod_type`, `user_id`, `pod_status`, `pod_created`, `pod_modified`) VALUES
+(1,	'page',	1,	1,	1446217608,	1446217608);
 
 DROP TABLE IF EXISTS `podfields`;
 CREATE TABLE `podfields` (
@@ -105,6 +179,9 @@ CREATE TABLE `podfields` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 TRUNCATE `podfields`;
+INSERT INTO `podfields` (`field_id`, `pod_id`, `field_name`, `lang_name`, `field_content`, `lang_id`) VALUES
+(1,	1,	'subtitle',	1,	'method: The HTTP form method to use for finding the input for this form. May be \'post\' or \'get\'. Defaults to \'post\'. Note that \'get\' method forms do not use form ids so are always considered to be submitted, which can have unexpected effects. The \'get\' method should only be used on forms that do not change data, as that is exclusively the domain of \'post.\'',	1),
+(2,	1,	'boat',	1,	'X22-L3',	1);
 
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
@@ -114,15 +191,29 @@ CREATE TABLE `role` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 TRUNCATE `role`;
+INSERT INTO `role` (`role_id`, `role_name`) VALUES
+(1,	'administrator'),
+(2,	'authenticated_user'),
+(3,	'moderator');
 
 DROP TABLE IF EXISTS `role_permissions`;
 CREATE TABLE `role_permissions` (
-  `role_id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL COMMENT 'Role id',
+  `perm_id` int(11) NOT NULL COMMENT 'Permission id',
   KEY `role_id` (`role_id`),
-  CONSTRAINT `role_permissions_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`)
+  KEY `perm_id` (`perm_id`),
+  CONSTRAINT `role_permissions_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`),
+  CONSTRAINT `role_permissions_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`),
+  CONSTRAINT `role_permissions_ibfk_3` FOREIGN KEY (`perm_id`) REFERENCES `permission` (`perm_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 TRUNCATE `role_permissions`;
+INSERT INTO `role_permissions` (`role_id`, `perm_id`) VALUES
+(2,	1),
+(2,	3),
+(3,	2),
+(3,	3),
+(3,	4);
 
 DROP TABLE IF EXISTS `settings`;
 CREATE TABLE `settings` (
@@ -134,16 +225,20 @@ CREATE TABLE `settings` (
 
 TRUNCATE `settings`;
 INSERT INTO `settings` (`setting_name`, `setting_value`) VALUES
-('admin_theme',	'queen'),
-('current_theme',	'leonidas'),
-('language',	'en'),
-('secret',	'coelacantsaretastyfishies');
+('combine_css',	'1'),
+('combine_js',	'1'),
+('dev_mode',	'1'),
+('language',	'1'),
+('minify_css',	'1'),
+('minify_js',	'1'),
+('theme_admin',	'queen'),
+('theme_front',	'prime');
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Primary Key: Unique user ID.',
   `user_name` varchar(32) COLLATE utf8_bin NOT NULL COMMENT 'Unique user name.',
-  `user_password` varchar(32) COLLATE utf8_bin NOT NULL COMMENT 'User’s password (hashed).',
+  `user_password` varchar(255) COLLATE utf8_bin NOT NULL COMMENT 'User’s password encrypted with password_hash()',
   `user_email` varchar(32) COLLATE utf8_bin NOT NULL COMMENT 'User’s e-mail address.',
   `user_created` int(11) NOT NULL COMMENT 'Timestamp for when user was created.',
   `user_login` int(11) NOT NULL COMMENT 'Timestamp for user’s last login.',
@@ -156,7 +251,7 @@ CREATE TABLE `user` (
 
 TRUNCATE `user`;
 INSERT INTO `user` (`user_id`, `user_name`, `user_password`, `user_email`, `user_created`, `user_login`, `user_status`, `lang_id`) VALUES
-(1,	'admin',	'21232f297a57a5a743894a0e4a801fc3',	'admin@admin.com',	0,	0,	1,	1);
+(1,	'admin',	'$2y$10$2WPC/.88MhMOnpY1Z1b5c.eh00VmSTfxDs.Lg6cAVWvLOWmPOMitO',	'admin@admin.com',	1445870898,	0,	1,	1);
 
 DROP TABLE IF EXISTS `user_roles`;
 CREATE TABLE `user_roles` (
@@ -169,5 +264,22 @@ CREATE TABLE `user_roles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 TRUNCATE `user_roles`;
+INSERT INTO `user_roles` (`user_id`, `role_id`) VALUES
+(1,	1),
+(1,	2),
+(1,	3);
 
--- 2015-10-23 19:53:02
+DROP TABLE IF EXISTS `widget`;
+CREATE TABLE `widget` (
+  `widget_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The id of the widget',
+  `widget_name` varchar(255) COLLATE utf8_bin NOT NULL COMMENT 'Machine readable name of the widget.',
+  `widget_title` varchar(255) COLLATE utf8_bin NOT NULL COMMENT 'Human readable title of the widget.',
+  `widget_type` varchar(32) COLLATE utf8_bin NOT NULL COMMENT 'Type of the widget. Usually it''s text or function.',
+  `access_level` varchar(255) COLLATE utf8_bin NOT NULL COMMENT 'The permission needed to view this widget.',
+  `widget_body` longtext COLLATE utf8_bin NOT NULL COMMENT 'JSON content of the widget. This is not meant to be searchable so it''s ok.',
+  PRIMARY KEY (`widget_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+TRUNCATE `widget`;
+
+-- 2015-11-01 17:40:56
