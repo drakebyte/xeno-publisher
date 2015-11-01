@@ -14,4 +14,6 @@ $Xeno->Router->execute($Xeno);
 
 $Xeno->Page->process($Xeno);
 
+$Xeno->Theme->setTheme($Xeno->Router->theme);
+
 // $Xeno->

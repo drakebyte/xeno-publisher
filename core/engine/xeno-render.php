@@ -16,14 +16,18 @@
 //	print		then content only without widgets and sidebars, load print css
 //	desktop		then everything
 
+//	execute the hook before the render starts
+HOOK::do_action( 'xeno_prerender', $Xeno );
 //	start rendering
 $Xeno->Theme->setTheme($Xeno->Router->theme);
 
 
 
 //	finish rendering, safe to delete everything after this line.
-debug( $Xeno, null,true );
 
 // $Xeno->Assets->Rebuild();	//	force rebuild minified assets
 $Xeno->Assets->PrintCSS();
 $Xeno->Assets->PrintJS( 'footer' );
+
+
+debug( $Xeno, null,true );
