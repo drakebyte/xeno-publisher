@@ -13,4 +13,4 @@ include_once ( XENO_ROOT . '/core/engine/xeno-prepare.php' );
 include_once ( XENO_ROOT . '/core/engine/xeno-render.php' );
 
 //	testing stuff
-// include_once ( XENO_ROOT . '/testingMVC.php' );
+include_once ( XENO_ROOT . '/testingMVC.php' );

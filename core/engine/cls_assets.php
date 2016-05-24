@@ -28,7 +28,7 @@ class Assets {
 		return true;
 	}
 
-//	print
+//	print (these are the functions that print out the final output and should be called at the corresponding location of the render code)
 	public function PrintCSS() {
 		if (count($this->css) > 0) {
 			$stylelist = $this->Prepare($this->css, 'css');
@@ -56,9 +56,10 @@ class Assets {
 	public function Minify($string, $type) {
 		if ($type == 'js') {
 			$myPacker = new MinifyJS($string);
-		}
-		if ($type == 'css') {
+		} elseif ($type == 'css') {
 			$myPacker = new MinifyCSS($string);
+		} else {
+			$string = '';
 		}
 		$string = $myPacker->pack();
 		return $string;

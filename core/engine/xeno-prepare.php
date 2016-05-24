@@ -8,7 +8,7 @@
 * Continue in xeno-render.php
 */
 
-HOOK::do_action( 'xeno_init', $Xeno );	//	do something before the page starts rendering, for example add extra scripts or css etc
+HOOK::do_action( 'xeno_init', $Xeno );
 
 $Xeno->Router->execute($Xeno);
 
@@ -16,4 +16,4 @@ $Xeno->Page->process($Xeno);
 
 $Xeno->Theme->setTheme($Xeno->Router->theme);
 
-// $Xeno->
+HOOK::do_action( 'xeno_prerender', $Xeno );

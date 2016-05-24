@@ -16,12 +16,12 @@
 //	print		then content only without widgets and sidebars, load print css
 //	desktop		then everything
 
-//	execute the hook before the render starts
-HOOK::do_action( 'xeno_prerender', $Xeno );
+
+
 //	start rendering
-$Xeno->Theme->setTheme($Xeno->Router->theme);
 
 
+// include_once();
 
 //	finish rendering, safe to delete everything after this line.
 
