@@ -163,6 +163,8 @@ if ( isset( $_POST['action'] ) ) {
 	}
 }
 
+debug( $Xeno->Page->title );
+
 ?>
 <form action="" method="post">
 	<input type="hidden" name="action" value="login" />
@@ -181,6 +183,12 @@ if ( isset( $_POST['action'] ) ) {
 	<input type="hidden" name="action" value="logout" />
 	<input type="submit" value="Log Out" name="submit" />
 </form>
+<hr />
+<div class="form-group">
+	<label for="rgba">rgb(a) minicolors example</label>
+	<br>
+	<input type="text" id="rgba" class="colorfield" data-format="rgb" data-opacity=".5" value="rgba(52, 64, 158, 0.5)">
+</div>
 <?php
 $timing->printElapsedTime();
 //	****************************\*/****************************

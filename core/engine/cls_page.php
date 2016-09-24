@@ -13,9 +13,13 @@ class Page {
 			case 'pod':
 				include_once ( XENO_CORE . '/engine/lib_pod.php' );
 				$this->content = pod_load( $Xeno->Router->params[0] );
+				$this->title = $this->content['field']['title'][0] ? $this->content['field']['title'][0] : 'Pod number ' . $this->content['pod_id'];
 				break;
-			case 'error':
+			case 'error':	//	404 page
 				debug( 'THIS PAGE DOES NOT EXIST: ' . $Xeno->Router->callback['path_callback'], null,true );
+				break;
+			case 'denied':	//	403 page
+				debug( 'THIS IS NOT THE PAGE YOU WERE LOOKING FOR: ' . $Xeno->Router->callback['path_callback'], null,true );
 				break;
 			default:
 				debug( $Xeno->Router->callback['path_type'] . ' IS NOT A VALID CALLBACK TYPE', null,true );
