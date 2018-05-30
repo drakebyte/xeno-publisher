@@ -33,7 +33,6 @@ class Router {
 	}
 	
 	public function execute($Xeno) {
-		$Xeno->Page->title = 'MODIFIED THE PAGE CONTENT';
 		$routelist = array_merge( $this->getRoutes(), $this->routes );
 		$this->path = $this->path ? $this->path : 'home';
 		foreach ( $routelist as $pattern => $callback ) {

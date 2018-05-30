@@ -34,9 +34,6 @@ include_once ( XENO_CORE . '/engine/lib_shortcodes.php' );
 include_once ( XENO_CORE . '/engine/lib_formatting.php' );
 include_once ( XENO_CORE . '/engine/cls_streamfile.php' );
 
-include_once ( XENO_CORE . '/control/home.php' );
-include_once ( XENO_CORE . '/control/dashboard.php' );
-
 define( 'VERSION',			'1.0');
 define( 'DB_ENCODING',		'utf8' );
 define( 'XENO_STATUS',		$config['dev'] );

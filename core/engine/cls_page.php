@@ -8,10 +8,12 @@ class Page {
 		array_shift($Xeno->Router->params);	//	we delete the first element, because it is obsolete
 		switch ( $Xeno->Router->callback['path_type'] ) {
 			case 'function':
+				include_once ( XENO_CORE . '/control/home.php' );
+				include_once ( XENO_CORE . '/control/dashboard.php' );
 				return call_user_func( $Xeno->Router->callback['path_callback'], $Xeno->Router->params, $Xeno );
 				break;
 			case 'pod':
-				include_once ( XENO_CORE . '/engine/lib_pod.php' );
+				include_once ( XENO_CORE . '/control/pod.php' );
 				$this->content = pod_load( $Xeno->Router->params[0] );
 				$this->title = $this->content['field']['title'][0] ? $this->content['field']['title'][0] : 'Pod number ' . $this->content['pod_id'];
 				break;
