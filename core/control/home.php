@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 function display_home($params, $Xeno) {
 	$Xeno->Page->title = 'HOME PAGE TITLE';
